@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
+//First commit on Sam's Branch.
 
 @Autonomous(name = "SuperRedStraight", group = "Autonomous")
 public class SuperRedStraight extends LinearOpMode{
