@@ -28,7 +28,6 @@ public class RRHardwarePresets {
     public DcMotor right2;
 
     //Sensors
-    //public ColorSensor jewelSensor;
     public BNO055IMU imu;
 
     Orientation angles;
@@ -62,8 +61,6 @@ public class RRHardwarePresets {
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        //Sensor LED control.
-        //jewelSensor.enableLed(false);
     }
 
     //---UNIVERSAL METHODS BELOW---
@@ -93,8 +90,8 @@ public class RRHardwarePresets {
         }
     }
 
-    //Takes power and distance to rotate and "CW" clockwise or "CCW" as directional input.
-    public void turnDirection(double power, int distance, String direction) {
+    //Takes power and distance to rotate and "CW" clockwise or "CCW" as directional input. Turns to a location.
+    public void turnToLocation(String direction, double power, int distance) {
         //Resets encoders by setting to STOP_AND_RESET_ENCODER mode.
         setRunMode("STOP_AND_RESET_ENCODER");
         setRunMode("RUN_TO_POSITION");
@@ -142,6 +139,7 @@ public class RRHardwarePresets {
         setRunMode("RUN_USING_ENCODER");
     }
 
+    //sets the RunMode of all drive motors.
     public void setRunMode(String input) {
         if (input.equals("STOP_AND_RESET_ENCODER")) {
             this.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -192,6 +190,22 @@ public class RRHardwarePresets {
         left2.setTargetPosition(distance);
         right1.setTargetPosition(distance);
         right2.setTargetPosition(distance);
+    }
+
+    //Turns using setPower(). Needs to be told when to stop.
+    public void turn(String direction, double power){
+        if(direction == "CW"){
+            left1.setPower(power);
+            left2.setPower(power);
+            right1.setPower(-1 * power);
+            right2.setPower(-1 * power);
+        }
+        if(direction == "CCW"){
+            left1.setPower(-1 * power);
+            left2.setPower(-1 * power);
+            right1.setPower(power);
+            right2.setPower(power);
+        }
     }
 
     String formatDegrees(double degrees){

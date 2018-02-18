@@ -55,32 +55,10 @@ public class SuperRedStraight extends LinearOpMode{
         parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
         robot.imu.initialize(parameters1);
-
-        composeTelemetry();
-
-        telemetry.addLine()
-            .addData("heading", new Func<String>() {
-                @Override
-                public String value() {
-                    return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
-                }
-            })
-            .addData("roll", new Func<String>() {
-                @Override
-                public String value() {
-                    return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
-                }
-            })
-            .addData("pitch", new Func<String>() {
-                @Override
-                public String value() {
-                    return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
-                }
-            });
         relicTrackables.activate();
-        while (!opModeIsActive()) {
-            telemetry.addData("Target Position", targetPosition);
-            telemetry.update();
+
+        while(!opModeIsActive()){
+            telemetryDisplay();
             targetPosition = lookForVuMark(relicTemplate);//1 - LEFT, 2 - RIGHT, 3 - CENTER, 0 - NOT VISIBLE, 4 - TIMEOUT}
         }
 
@@ -89,143 +67,98 @@ public class SuperRedStraight extends LinearOpMode{
         if (targetPosition == 0){
             targetPosition = 3;
         }
-        telemetry.addData("TargetPosition", targetPosition);
 
-        if (targetPosition == 1) {
-            robot.driveForwardSetDistance(0.2, 1175);
-            while (robot.left1.isBusy() & robot.right1.isBusy()) {
-                //double firstAngle = Math.abs(robot.angles.firstAngle);
-                //double POWER = -1.03;
-                telemetry.update();
-                if (robot.angles.firstAngle < 0.000001) {
-                    robot.left1.setPower(-0.2);
-                    robot.left2.setPower(-0.2);
-                    robot.right1.setPower(-0.2 * POWER);
-                    robot.right2.setPower(-0.2 * POWER);
-                } else if (robot.angles.firstAngle > 0.000001) {
-                    robot.left1.setPower(-0.2 * POWER);
-                    robot.left2.setPower(-0.2 * POWER);
-                    robot.right1.setPower(-0.2);
-                    robot.right2.setPower(-0.2);
-                } else {
-                    robot.left1.setPower(-0.2);
-                    robot.left2.setPower(-0.2);
-                    robot.right1.setPower(-0.2);
-                    robot.right2.setPower(-0.2);
-                }
-            }
-            telemetry.update();
-            while (opModeIsActive()) {
-                telemetry.update();
-                if (robot.angles.firstAngle < 84) {
-                    robot.left1.setPower(0.05);
-                    robot.left2.setPower(0.05);
-                    robot.right1.setPower(-0.05);
-                    robot.right2.setPower(-0.05);
-                } else if (robot.angles.firstAngle > 96) {
-                    robot.left1.setPower(-0.05);
-                    robot.left2.setPower(-0.05);
-                    robot.right1.setPower(0.05);
-                    robot.right2.setPower(0.05);
-                } else if (robot.angles.firstAngle > 84 && robot.angles.firstAngle < 96) {
-                    robot.left1.setPower(0);
-                    robot.left2.setPower(0);
-                    robot.right1.setPower(0);
-                    robot.right2.setPower(0);
-                    sleep(30000);
-                }
+        runAutonomous(targetPosition);
+
+    }
+
+    public int lookForVuMark(VuforiaTrackable rTemplate){
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(rTemplate);
+        int returnValue = 0;
+        if(vuMark != RelicRecoveryVuMark.UNKNOWN){
+            if(vuMark == RelicRecoveryVuMark.LEFT){ // Test to see if Image is the "LEFT" image and display value.
+                telemetry.addData("VuMark is", "Left");
+                returnValue = 1;
+            }else if(vuMark == RelicRecoveryVuMark.RIGHT){ // Test to see if Image is the "RIGHT" image and display values.
+                telemetry.addData("VuMark is", "Right");
+                returnValue = 2;
+            }else if(vuMark == RelicRecoveryVuMark.CENTER){ // Test to see if Image is the "CENTER" image and display values.
+                telemetry.addData("VuMark is", "Center");
+                returnValue = 3;
             }
         }
-            if (targetPosition == 2) {
-                robot.driveForwardSetDistance(0.2, 1150);
-                while (robot.left1.isBusy() & robot.right1.isBusy()) {
-                    //double firstAngle = Math.abs(robot.angles.firstAngle);
-                    //double POWER = -1.03;
-                    telemetry.update();
-                    if (robot.angles.firstAngle < 0.000001) {
-                        robot.left1.setPower(-0.2);
-                        robot.left2.setPower(-0.2);
-                        robot.right1.setPower(-0.2 * POWER);
-                        robot.right2.setPower(-0.2 * POWER);
-                    } else if (robot.angles.firstAngle > 0.000001) {
-                        robot.left1.setPower(-0.2 * POWER);
-                        robot.left2.setPower(-0.2 * POWER);
-                        robot.right1.setPower(-0.2);
-                        robot.right2.setPower(-0.2);
-                    } else {
-                        robot.left1.setPower(-0.2);
-                        robot.left2.setPower(-0.2);
-                        robot.right1.setPower(-0.2);
-                        robot.right2.setPower(-0.2);
-                    }
-                }
-                telemetry.update();
-                while (opModeIsActive()){
-                    telemetry.update();
-                    if(robot.angles.firstAngle > -88){
-                        robot.left1.setPower(0.2);
-                        robot.left2.setPower(0.2);
-                        robot.right1.setPower(-0.2);
-                        robot.right2.setPower(-0.2);
-                    }else if (robot.angles.firstAngle < -98){
-                        robot.left1.setPower(-0.2);
-                        robot.left2.setPower(-0.2);
-                        robot.right1.setPower(0.2);
-                        robot.right2.setPower(0.2);
-                    } else if (robot.angles.firstAngle < -88 && robot.angles.firstAngle > -98) {
-                        robot.left1.setPower(0);
-                        robot.left2.setPower(0);
-                        robot.right1.setPower(0);
-                        robot.right2.setPower(0);
-                        sleep(30000);
-                    }
-                }
+        telemetry.update();
+        return(returnValue);
+    }
+
+    public void turnToAngle(String turnDirection, double power, int targetAngle){
+        if(turnDirection == "CCW") {
+            if(robot.angles.firstAngle < (targetAngle - 5)){
+                robot.turn("CCW", power);
             }
-            if (targetPosition == 3) {
-                robot.driveForwardSetDistance(0.2, 935);
-                while (robot.left1.isBusy() & robot.right1.isBusy()) {
-                    //double firstAngle = Math.abs(robot.angles.firstAngle);
-                    //double POWER = -1.03;
-                    telemetry.update();
-                    if (robot.angles.firstAngle < 0.000001) {
-                        robot.left1.setPower(-0.2);
-                        robot.left2.setPower(-0.2);
-                        robot.right1.setPower(-0.2 * POWER);
-                        robot.right2.setPower(-0.2 * POWER);
-                    } else if (robot.angles.firstAngle > 0.000001) {
-                        robot.left1.setPower(-0.2 * POWER);
-                        robot.left2.setPower(-0.2 * POWER);
-                        robot.right1.setPower(-0.2);
-                        robot.right2.setPower(-0.2);
-                    } else {
-                        robot.left1.setPower(-0.2);
-                        robot.left2.setPower(-0.2);
-                        robot.right1.setPower(-0.2);
-                        robot.right2.setPower(-0.2);
-                    }
-                }
-                telemetry.update();
-                while(opModeIsActive()){
-                    telemetry.update();
-                    if(robot.angles.firstAngle < 84){
-                        robot.left1.setPower(0.05);
-                        robot.left2.setPower(0.05);
-                        robot.right1.setPower(-0.05);
-                        robot.right2.setPower(-0.05);
-                    }else if (robot.angles.firstAngle > 96){
-                        robot.left1.setPower(-0.05);
-                        robot.left2.setPower(-0.05);
-                        robot.right1.setPower(0.05);
-                        robot.right2.setPower(0.05);
-                    } else if (robot.angles.firstAngle > 84 && robot.angles.firstAngle < 96){
-                        robot.left1.setPower(0);
-                        robot.left2.setPower(0);
-                        robot.right1.setPower(0);
-                        robot.right2.setPower(0);
-                        sleep(30000);
-                    }
-                }
+            else if(robot.angles.firstAngle > (targetAngle + 5)){
+                robot.turn("CW", power);
             }
+            else{//(targetAngle - 5) < robot.angles.firstAngle < (targetAngle + 5)
+                robot.setMotorPower(0.0);
+            }
+        }
+        if(turnDirection == "CW"){
+            if(robot.angles.firstAngle < (targetAngle - 5)){
+                robot.turn("CW", power);
+            }
+            else if(robot.angles.firstAngle > (targetAngle + 5)){
+                robot.turn("CCW", power);
+            }
+            else{//(targetAngle - 5) < robot.angles.firstAngle < (targetAngle + 5)
+                robot.setMotorPower(0.0);
+            }
+        }
+    }
+
+    public void correctDriving(double correctionDegree, double power){
+        if(robot.angles.firstAngle < 0.001){
+            robot.left1.setPower(power);
+            robot.left2.setPower(power);
+            robot.right1.setPower(power * correctionDegree);
+            robot.right2.setPower(power * correctionDegree);
+        }
+        else if(robot.angles.firstAngle > -0.001){
+            robot.left1.setPower(power * correctionDegree);
+            robot.left2.setPower(power * correctionDegree);
+            robot.right1.setPower(power);
+            robot.right2.setPower(power);
+        }
+        else{ // -0.001 < robot.angle.firstAngle < 0.001
+            robot.left1.setPower(power);
+            robot.left2.setPower(power);
+            robot.right1.setPower(power);
+            robot.right2.setPower(power);
+        }
+    }
+
+    public void runAutonomous(int targetPosition){
+        if(targetPosition == 1){
+            robot.driveForwardSetDistance(0.2, 1175);
+            while(robot.anyMotorsBusy()){
+                correctDriving(-0.2, 1.15);
+            }
+            turnToAngle("CW",0.2, 90);
+        }
+        if(targetPosition == 2){
+            robot.driveForwardSetDistance(0.2, 1150);
+            while(robot.anyMotorsBusy()){
+                correctDriving(-0.2, 1.15);
+            }
+            turnToAngle("CW", 0.2, -90);
+        }
+        if(targetPosition == 3){
+            robot.driveForwardSetDistance(0.2, 935);
+            while(robot.anyMotorsBusy()){
+                correctDriving(0.2, 1.15);
+            }
+            turnToAngle("CW", 0.2, -95);
+        }
     }
 
     public void telemetryDisplay(){
@@ -247,7 +180,26 @@ public class SuperRedStraight extends LinearOpMode{
                @Override
                 public String value(){return robot.imu.getCalibrationStatus().toString();}
             });
-        //Continue to add telemetry below.
-        //telemetry.addLine();
+        //New Telemetry line
+        telemetry.addLine()
+            .addData("heading", new Func<String>() {
+                @Override
+                public String value(){return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);}
+                })
+                .addData("roll", new Func<String>() {
+                    @Override
+                    public String value() {return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);}
+                })
+                .addData("pitch", new Func<String>() {
+                    @Override
+                    public String value(){return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);}
+                });
+        //New Telemetry line
+        telemetry.addLine()
+            .addData("TargetPosition", new Func<Integer>(){
+                @Override
+                public Integer value(){return targetPosition;}
+            });
+
     }
 }
