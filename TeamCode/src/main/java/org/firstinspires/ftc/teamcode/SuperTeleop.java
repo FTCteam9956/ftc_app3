@@ -20,8 +20,8 @@ public class SuperTeleop extends LinearOpMode {
     // declare joystick position variables
     double X1; double Y1; double X2; double Y2;
     // operational constants
-    double joyScale = 0.5;
-    double motorMax = 0.6; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
+    double joyScale = 0.93;
+    double motorMax = 0.93; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
 
     @Override
     public void runOpMode(){

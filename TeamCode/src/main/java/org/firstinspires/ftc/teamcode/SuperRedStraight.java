@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -16,15 +17,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-
+@Autonomous(name = "SuperRedStraight", group = "Autonomous")
 public class SuperRedStraight extends LinearOpMode {
     RRHardwarePresets robot = new RRHardwarePresets();
 
     VuforiaLocalizer vuforia;
 
     int targetPosition = 0;
+    private static double POWER = 1.15;
 
-    public void runOpMode(){
+    public void runOpMode() {
         robot.init(hardwareMap);
         robot.setRunMode("STOP_AND_RESET_ENCODER");
         robot.setRunMode("RUN_USING_ENCODER");
@@ -72,17 +74,179 @@ public class SuperRedStraight extends LinearOpMode {
                         return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
                     }
                 });
-        while(!opModeIsActive()){
+        relicTrackables.activate();
+        while (!opModeIsActive()) {
+            telemetry.addData("Target Position", targetPosition);
             telemetry.update();
-            long initTime = (System.nanoTime() / 1000000); //Converting Nanoseconds to Milliseconds.
-            long timeOutTime = 2000; //In Milliseconds.
-            while(targetPosition == 0) {
-                targetPosition = lookForVuMark(relicTemplate);//1 - LEFT, 2 - RIGHT, 3 - CENTER, 0 - NOT VISIBLE, 4 - TIMEOUT}
-            }
+            targetPosition = lookForVuMark(relicTemplate);//1 - LEFT, 2 - RIGHT, 3 - CENTER, 0 - NOT VISIBLE, 4 - TIMEOUT}
         }
+
         waitForStart();
 
+        if (targetPosition == 0){
+            targetPosition = 3;
+        }
+        telemetry.addData("TargetPosition", targetPosition);
 
+        while(opModeIsActive()){
+            telemetry.update();
+            if(robot.angles.firstAngle < 84){
+                robot.left1.setPower(0.2);
+                robot.left2.setPower(0.2);
+                robot.right1.setPower(-0.2);
+                robot.right2.setPower(-0.2);
+                telemetry.update();
+            } else if (robot.angles.firstAngle > 96) {
+                robot.left1.setPower(-0.2);
+                robot.left2.setPower(-0.2);
+                robot.right1.setPower(0.2);
+                robot.right2.setPower(0.2);
+                telemetry.update();
+            }
+//            else if (robot.angles.firstAngle > 84 && robot.angles.firstAngle < 130) {
+//                robot.left1.setPower(0);
+//                robot.left2.setPower(0);
+//                robot.right1.setPower(0);
+//                robot.right2.setPower(0);
+//                sleep(30000);
+//            }
+        }
+
+//        if (targetPosition == 1) {
+//            robot.driveForwardSetDistance(0.2, 1175);
+//            while (robot.left1.isBusy() & robot.right1.isBusy()) {
+//                //double firstAngle = Math.abs(robot.angles.firstAngle);
+//                //double POWER = -1.03;
+//                telemetry.update();
+//                if (robot.angles.firstAngle < 0.000001) {
+//                    robot.left1.setPower(-0.2);
+//                    robot.left2.setPower(-0.2);
+//                    robot.right1.setPower(-0.2 * POWER);
+//                    robot.right2.setPower(-0.2 * POWER);
+//                } else if (robot.angles.firstAngle > 0.000001) {
+//                    robot.left1.setPower(-0.2 * POWER);
+//                    robot.left2.setPower(-0.2 * POWER);
+//                    robot.right1.setPower(-0.2);
+//                    robot.right2.setPower(-0.2);
+//                } else {
+//                    robot.left1.setPower(-0.2);
+//                    robot.left2.setPower(-0.2);
+//                    robot.right1.setPower(-0.2);
+//                    robot.right2.setPower(-0.2);
+//                }
+//            }
+//            telemetry.update();
+//            while (opModeIsActive()) {
+//                telemetry.update();
+//                if (robot.angles.firstAngle < 84) {
+//                    robot.left1.setPower(0.05);
+//                    robot.left2.setPower(0.05);
+//                    robot.right1.setPower(-0.05);
+//                    robot.right2.setPower(-0.05);
+//                } else if (robot.angles.firstAngle > 96) {
+//                    robot.left1.setPower(-0.05);
+//                    robot.left2.setPower(-0.05);
+//                    robot.right1.setPower(0.05);
+//                    robot.right2.setPower(0.05);
+//                } else if (robot.angles.firstAngle > 84 && robot.angles.firstAngle < 96) {
+//                    robot.left1.setPower(0);
+//                    robot.left2.setPower(0);
+//                    robot.right1.setPower(0);
+//                    robot.right2.setPower(0);
+//                    sleep(30000);
+//                }
+//            }
+//        }
+//            if (targetPosition == 2) {
+//                robot.driveForwardSetDistance(0.2, 830);
+//                while (robot.left1.isBusy() & robot.right1.isBusy()) {
+//                    //double firstAngle = Math.abs(robot.angles.firstAngle);
+//                    //double POWER = -1.03;
+//                    telemetry.update();
+//                    if (robot.angles.firstAngle < 0.000001) {
+//                        robot.left1.setPower(-0.2);
+//                        robot.left2.setPower(-0.2);
+//                        robot.right1.setPower(-0.2 * POWER);
+//                        robot.right2.setPower(-0.2 * POWER);
+//                    } else if (robot.angles.firstAngle > 0.000001) {
+//                        robot.left1.setPower(-0.2 * POWER);
+//                        robot.left2.setPower(-0.2 * POWER);
+//                        robot.right1.setPower(-0.2);
+//                        robot.right2.setPower(-0.2);
+//                    } else {
+//                        robot.left1.setPower(-0.2);
+//                        robot.left2.setPower(-0.2);
+//                        robot.right1.setPower(-0.2);
+//                        robot.right2.setPower(-0.2);
+//                    }
+//                }
+//                telemetry.update();
+//                while (opModeIsActive()) {
+//                    telemetry.update();
+//                    if (robot.angles.firstAngle < 84) {
+//                        robot.left1.setPower(0.05);
+//                        robot.left2.setPower(0.05);
+//                        robot.right1.setPower(-0.05);
+//                        robot.right2.setPower(-0.05);
+//                    } else if (robot.angles.firstAngle > 130) {
+//                        robot.left1.setPower(-0.05);
+//                        robot.left2.setPower(-0.05);
+//                        robot.right1.setPower(0.05);
+//                        robot.right2.setPower(0.05);
+//                    } else if (robot.angles.firstAngle > 84 && robot.angles.firstAngle < 96) {
+//                        robot.left1.setPower(0);
+//                        robot.left2.setPower(0);
+//                        robot.right1.setPower(0);
+//                        robot.right2.setPower(0);
+//                        sleep(30000);
+//                    }
+//                }
+//            }
+//            if (targetPosition == 3) {
+//                robot.driveForwardSetDistance(0.2, 935);
+//                while (robot.left1.isBusy() & robot.right1.isBusy()) {
+//                    //double firstAngle = Math.abs(robot.angles.firstAngle);
+//                    //double POWER = -1.03;
+//                    telemetry.update();
+//                    if (robot.angles.firstAngle < 0.000001) {
+//                        robot.left1.setPower(-0.2);
+//                        robot.left2.setPower(-0.2);
+//                        robot.right1.setPower(-0.2 * POWER);
+//                        robot.right2.setPower(-0.2 * POWER);
+//                    } else if (robot.angles.firstAngle > 0.000001) {
+//                        robot.left1.setPower(-0.2 * POWER);
+//                        robot.left2.setPower(-0.2 * POWER);
+//                        robot.right1.setPower(-0.2);
+//                        robot.right2.setPower(-0.2);
+//                    } else {
+//                        robot.left1.setPower(-0.2);
+//                        robot.left2.setPower(-0.2);
+//                        robot.right1.setPower(-0.2);
+//                        robot.right2.setPower(-0.2);
+//                    }
+//                }
+//                telemetry.update();
+//                while(opModeIsActive()){
+//                    telemetry.update();
+//                    if(robot.angles.firstAngle < 84){
+//                        robot.left1.setPower(0.05);
+//                        robot.left2.setPower(0.05);
+//                        robot.right1.setPower(-0.05);
+//                        robot.right2.setPower(-0.05);
+//                    }else if (robot.angles.firstAngle > 96){
+//                        robot.left1.setPower(-0.05);
+//                        robot.left2.setPower(-0.05);
+//                        robot.right1.setPower(0.05);
+//                        robot.right2.setPower(0.05);
+//                    } else if (robot.angles.firstAngle > 84 && robot.angles.firstAngle < 96){
+//                        robot.left1.setPower(0);
+//                        robot.left2.setPower(0);
+//                        robot.right1.setPower(0);
+//                        robot.right2.setPower(0);
+//                        sleep(30000);
+//                    }
+//                }
+//            }
     }
     void composeTelemetry() {
 
@@ -157,10 +321,6 @@ public class SuperRedStraight extends LinearOpMode {
                 telemetry.addData("VuMark is", "Center");
                 returnValue = 3;
             }
-        }
-        else{
-            telemetry.addData("VuMark", "not visible");
-            returnValue = 4;
         }
         telemetry.update();
         return(returnValue);
