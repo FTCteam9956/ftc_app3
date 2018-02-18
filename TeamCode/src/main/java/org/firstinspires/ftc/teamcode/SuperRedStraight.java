@@ -22,6 +22,7 @@ import java.util.Locale;
 public class SuperRedStraight extends LinearOpMode{
     RRHardwarePresets robot = new RRHardwarePresets();
 
+    //Vuforia Code (try moving to RRHardwarePresets)
     VuforiaLocalizer vuforia;
 
     int targetPosition = 0;
@@ -29,15 +30,17 @@ public class SuperRedStraight extends LinearOpMode{
 
     public void runOpMode() {
         robot.init(hardwareMap);
+
+        //Initialization of RunMode
         robot.setRunMode("STOP_AND_RESET_ENCODER");
         robot.setRunMode("RUN_USING_ENCODER");
 
+        //Vuforia
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AU0kxmH/////AAAAGV4QPVzzlk6Hl969cSL2pmM4F6TuzhWZS/dKbY45MEzS31OYJxLbKewdt1CSFrmpvrpPnIYZyBJt3kFRJQCtEXet0LHd2KtBB5NsDTuBADfgIsQk+7TSWSTFDjSi8SpKaXtAjZPKePwGDaIKf5VK6mRBYaWxqTHpZFBlelejLHxib8qweOFrJjKTsbgsb2pwVNFhDeJabbI5aed8JSI8LxHs0368ezQfnCz3UK9u8pC1DkKgcwdgoJ0OXBKChXB4v2lEnIrQf7ROYcPtVuRJJ5/prBoyfR11pvp69iCA25Cttz9xVsdZ9VliuQJ4UO37Hzhz1dB2SPnxTQQmCJMDoDKqe3wpiCFu8ThQ4pmS05ka";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK; // Use FRONT Camera (Change to BACK if you want to use that one)
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES; // Display Axes
-
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
@@ -50,7 +53,6 @@ public class SuperRedStraight extends LinearOpMode{
         parameters1.loggingEnabled = true;
         parameters1.loggingTag = "IMU";
         parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
         robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
         robot.imu.initialize(parameters1);
 
@@ -225,81 +227,27 @@ public class SuperRedStraight extends LinearOpMode{
                 }
             }
     }
-    void composeTelemetry() {
 
+    public void telemetryDisplay(){
         telemetry.addAction(new Runnable() {
             @Override
             public void run() {
+                //Anything we need to keep track of for telemetry
                 robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 robot.gravity = robot.imu.getGravity();
             }
         });
+        //Adds a new Line to telemetry
         telemetry.addLine()
-                .addData("status", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.imu.getSystemStatus().toShortString();
-                    }
-                })
-                .addData("calib", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.imu.getCalibrationStatus().toString();
-                    }
-                });
-        telemetry.addLine()
-                .addData("heading", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
-                    }
-                })
-                .addData("roll", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
-                    }
-                })
-                .addData("pitch", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
-                    }
-                });
-
-        telemetry.addLine()
-                .addData("grvty", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.gravity.toString();
-                    }
-                })
-                .addData("mag", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return String.format(Locale.getDefault(), "%.3f",
-                                Math.sqrt(robot.gravity.xAccel * robot.gravity.xAccel
-                                        + robot.gravity.yAccel * robot.gravity.yAccel
-                                        + robot.gravity.zAccel * robot.gravity.zAccel));
-                    }
-                });
-    }
-    public int lookForVuMark(VuforiaTrackable rTemplate){
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(rTemplate);
-        int returnValue = 0;
-        if(vuMark != RelicRecoveryVuMark.UNKNOWN){
-            if(vuMark == RelicRecoveryVuMark.LEFT){ // Test to see if Image is the "LEFT" image and display value.
-                telemetry.addData("VuMark is", "Left");
-                returnValue = 1;
-            }else if(vuMark == RelicRecoveryVuMark.RIGHT){ // Test to see if Image is the "RIGHT" image and display values.
-                telemetry.addData("VuMark is", "Right");
-                returnValue = 2;
-            }else if(vuMark == RelicRecoveryVuMark.CENTER){ // Test to see if Image is the "CENTER" image and display values.
-                telemetry.addData("VuMark is", "Center");
-                returnValue = 3;
-            }
-        }
-        telemetry.update();
-        return(returnValue);
+            .addData("status", new Func<String>(){//Adds new value to Line
+                @Override
+                public String value(){return robot.imu.getSystemStatus().toShortString();};
+            })
+            .addData("status2", new Func<String>(){//Adds new value to Line
+               @Override
+                public String value(){return robot.imu.getCalibrationStatus().toString();}
+            });
+        //Continue to add telemetry below.
+        //telemetry.addLine();
     }
 }
