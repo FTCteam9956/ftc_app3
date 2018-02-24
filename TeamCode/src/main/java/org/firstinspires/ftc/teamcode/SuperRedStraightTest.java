@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -19,9 +18,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name = "SuperBlueStraight", group = "Autonomous")
+@Autonomous(name = "SuperRedStraightTest", group = "Autonomous")
 //@Disabled
-public class SuperBlueStraight extends LinearOpMode{
+public class SuperRedStraightTest extends LinearOpMode {
     RRHardwarePresets robot = new RRHardwarePresets();
 
     VuforiaLocalizer vuforia;
@@ -92,7 +91,6 @@ public class SuperBlueStraight extends LinearOpMode{
         telemetry.addData("TargetPosition", targetPosition);
 
         runAutonomous(targetPosition);
-
     }
     void composeTelemetry() {
 
@@ -221,25 +219,25 @@ public class SuperBlueStraight extends LinearOpMode{
 
     public void runAutonomous(int targetPosition){
         if(targetPosition == 1){
-            robot.driveForwardSetDistance(-0.2, -1175);
+            robot.driveForwardSetDistance(0.2, 1175);
             while(robot.anyMotorsBusy()){
                 correctDriving(-0.2);
             }
-            turnToAngle("CCW",0.2, 90);
+            turnToAngle("CW",0.2, -90);
         }
         if(targetPosition == 2){
-            robot.driveForwardSetDistance(-0.2, -1150);
+            robot.driveForwardSetDistance(0.2, 1150);
             while(robot.anyMotorsBusy()){
                 correctDriving(-0.2);
             }
-            turnToAngle("CCW", 0.2, 90);
+            turnToAngle("CW", 0.2, -90);
         }
         if(targetPosition == 3){
-            robot.driveForwardSetDistance(-0.2, -935);
+            robot.driveForwardSetDistance(0.2, 935);
             while(robot.anyMotorsBusy()){
                 correctDriving(0.2);
             }
-            turnToAngle("CCW", 0.2, 95);
+            turnToAngle("CW", 0.2, -95);
         }
     }
 

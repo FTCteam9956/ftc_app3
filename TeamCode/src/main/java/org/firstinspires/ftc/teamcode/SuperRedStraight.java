@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.Locale;
 
 @Autonomous(name = "SuperRedStraight", group = "Autonomous")
+@Disabled
 public class SuperRedStraight extends LinearOpMode{
     RRHardwarePresets robot = new RRHardwarePresets();
 
@@ -90,9 +92,7 @@ public class SuperRedStraight extends LinearOpMode{
 
         if (targetPosition == 1) {
             robot.driveForwardSetDistance(0.2, 1175);
-            while (robot.left1.isBusy() & robot.right1.isBusy()) {
-                //double firstAngle = Math.abs(robot.angles.firstAngle);
-                //double POWER = -1.03;
+            while (robot.left1.isBusy() & robot.right1.isBusy()){
                 telemetry.update();
                 if (robot.angles.firstAngle < 0.000001) {
                     robot.left1.setPower(-0.2);
