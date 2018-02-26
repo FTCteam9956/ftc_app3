@@ -26,23 +26,28 @@ public class RRHardwarePresets {
     public DcMotor left2; //Back Left Drive Motor
     public DcMotor right1;//Front Right Drive Motor
     public DcMotor right2;//Back Right Drive Motor
-//    public DcMotor intake;//Glyph Intake Motor
-//    public DcMotor winch; //Raises Glyph Export
+    public DcMotor intake;//Glyph Intake Motor
+    public DcMotor winch; //Raises Glyph Export
 //    public DcMotor relicArm; //Slides out Relic Arm
 
     //Servos
-//    public Servo rotateArm; //Jewel Arm
-//    public Servo lowerArm; //Jewel Arm
-//    public Servo rotateBox; //Glyph Intake
+    public Servo rotateArm; //Jewel Arm
+    public Servo lowerArm; //Jewel Arm
+    public Servo rotateBox; //Glyph Intake
 //    public Servo twist; //Relic Arm
 //    public Servo pinch; //Relic Arm
 
     //Sensors
-    public ColorSensor jewelSensor;
+//    public ColorSensor jewelSensor;
     public BNO055IMU imu;
 
     Orientation angles;
     Acceleration gravity;
+
+    public static final double RELIC_CLAW_OPENED = 0;
+    public static final double RELIC_CLAW_CLOSED = 0;
+    public static final double RELIC_TWIST_UP = 0;
+    public static final double RELIC_TWIST_DOWN = 0;
 
     //Constructor
     public RRHardwarePresets() {
@@ -57,24 +62,24 @@ public class RRHardwarePresets {
         left2 = HwMap.dcMotor.get("left2");
         right1 = HwMap.dcMotor.get("right1");
         right2 = HwMap.dcMotor.get("right2");
-//        intake = HwMap.dcMotor.get("intake");
-//        winch = HwMap.dcMotor.get("winch");
+        intake = HwMap.dcMotor.get("intake");
+        winch = HwMap.dcMotor.get("winch");
 //        relicArm = HwMap.dcMotor.get("relicArm");
-//        rotateArm = HwMap.servo.get("rotateArm");
-//        lowerArm = HwMap.servo.get("lowerArm");
-//        rotateBox = HwMap.servo.get("rotateBox");
+        rotateArm = HwMap.servo.get("rotateArm");
+        lowerArm = HwMap.servo.get("lowerArm");
+        rotateBox = HwMap.servo.get("rotateBox");
 //        twist = HwMap.servo.get("twist");
 //        pinch = HwMap.servo.get("pinch");
 
-        jewelSensor = HwMap.colorSensor.get("jewelSensor");
+//        jewelSensor = HwMap.colorSensor.get("jewelSensor");
 
         //DC Motor directions.
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
         left2.setDirection(DcMotorSimple.Direction.FORWARD);
         right1.setDirection(DcMotorSimple.Direction.REVERSE);
         right2.setDirection(DcMotorSimple.Direction.REVERSE);
-//        intake.setDirection(DcMotorSimple.Direction.FORWARD);
-//        winch.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        winch.setDirection(DcMotorSimple.Direction.FORWARD);
 //        relicArm.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //DC Motor stop behavior.
@@ -82,12 +87,12 @@ public class RRHardwarePresets {
         left2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        relicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Sensor LED control.
-        //jewelSensor.enableLed(false);
+//        jewelSensor.enableLed(false);
     }
 
     //---UNIVERSAL METHODS BELOW---
