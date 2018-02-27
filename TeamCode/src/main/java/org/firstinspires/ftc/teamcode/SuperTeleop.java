@@ -90,17 +90,18 @@ public class SuperTeleop extends LinearOpMode {
                     robot.intake.setPower(0.0);
                 }
                 if(gamepad1.right_bumper){
-                    robot.moveServo(robot.rotateBox, 1.0, 250, 500);
+                    robot.moveServo(robot.rotateBox, 0.65,250, 500);
                 }
                 else if(gamepad1.left_bumper){
                     robot.moveServo(robot.rotateBox, 0.0, 250, 500);
+                    robot.intake.setPower(0.0);
                 }
                 if(gamepad1.right_trigger > 0.5){
                     robot.winch.setPower(-0.5);
-                    robot.rotateBox.setPosition(0.5);
+                    robot.rotateBox.setPosition(0.3);
                 }else if(gamepad1.left_trigger > 0.5){
                     robot.winch.setPower(0.5);
-                    robot.rotateBox.setPosition(0.5);
+                    robot.rotateBox.setPosition(0.3);
                 }else{
                     robot.winch.setPower(0);
                 }

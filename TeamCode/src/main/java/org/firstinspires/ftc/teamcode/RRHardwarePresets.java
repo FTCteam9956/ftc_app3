@@ -38,7 +38,7 @@ public class RRHardwarePresets {
 //    public Servo pinch; //Relic Arm
 
     //Sensors
-//    public ColorSensor jewelSensor;
+    public ColorSensor jewelArm;
     public BNO055IMU imu;
 
     Orientation angles;
@@ -48,6 +48,11 @@ public class RRHardwarePresets {
     public static final double RELIC_CLAW_CLOSED = 0;
     public static final double RELIC_TWIST_UP = 0;
     public static final double RELIC_TWIST_DOWN = 0;
+    public static final double JEWEL_ARM_UP = 0.0;
+    public static final double JEWEL_ARM_DOWN = 0.0;
+    public static final double ROTATE_RIGHT = 0.0;
+    public static final double ROTATE_LEFT = 0.0;
+    public static final double ROTATE_MID = 0.0;
 
     //Constructor
     public RRHardwarePresets() {
@@ -71,7 +76,7 @@ public class RRHardwarePresets {
 //        twist = HwMap.servo.get("twist");
 //        pinch = HwMap.servo.get("pinch");
 
-//        jewelSensor = HwMap.colorSensor.get("jewelSensor");
+        jewelArm = HwMap.colorSensor.get("jewelArm");
 
         //DC Motor directions.
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -92,7 +97,7 @@ public class RRHardwarePresets {
 //        relicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Sensor LED control.
-//        jewelSensor.enableLed(false);
+        jewelArm.enableLed(true);
     }
 
     //---UNIVERSAL METHODS BELOW---

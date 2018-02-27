@@ -90,6 +90,52 @@ public class SuperRedTurn extends LinearOpMode{
         }
         telemetry.addData("TargetPosition", targetPosition);
 
+        robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
+        sleep(100);
+
+        int loopBreak = 0;
+        while (loopBreak == 0) {
+            sleep(300);
+            if (robot.jewelArm.red() > robot.jewelArm.blue()) {
+                knockOffBall(1); //go right
+                telemetry.addData("Status", "Confirmed Red Ball!");
+                sleep(500);
+                loopBreak = 1;
+            } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
+                if (robot.jewelArm.blue() > 27) {
+                    knockOffBall(0); //go left
+                    telemetry.addData("Status", "Confirmed Blue Ball!");
+                    sleep(500);
+                    loopBreak = 1;
+                } else {
+                    telemetry.addData("Status", "Cannot determine color! Double Checking!");
+                    robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_UP, 200, 300);
+                    sleep(300);
+                    robot.rotateArm.setPosition(0.32);
+                    robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
+                    sleep(300);
+                    if (robot.jewelArm.red() > robot.jewelArm.blue()) {
+                        knockOffBall(1); //Go right
+                        telemetry.addData("Status", "Confirmed Red Ball!");
+                        sleep(500);
+                        loopBreak = 1;
+                    } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
+                        if (robot.jewelArm.blue() > 27) {
+                            knockOffBall(0); //go left
+                            telemetry.addData("Status", "Confirmed Blue Ball!");
+                            sleep(500);
+                            loopBreak = 1;
+                        } else {
+                            telemetry.addData("Status", "Cannot determine color! You screwed up!");
+                            loopBreak = 1;
+                        }
+                    }
+                }
+            }
+        }
+        telemetry.update();
+        sleep(300);
+
         runAutonomous(targetPosition);
 
     }
@@ -251,7 +297,17 @@ public class SuperRedTurn extends LinearOpMode{
             sleep(250);
             turnToAngle("CW", 0.2, -30);
             sleep(250);
-            robot.driveForwardSetDistance(0.1, 200);;
+            robot.moveServo(robot.rotateBox, 0.0, 1000, 1000);
+            sleep(250);
+            robot.driveForwardSetDistance(0.1, 200);
+            sleep(300);
+            robot.intake.setPower(1.0);
+            robot.driveForwardSetDistance(-0.2, 1500);
+            robot.turnDirection(0.05, 400, "CW");
+            sleep(1000);
+            robot.turnDirection(0.05, 400, "CCW");
+            sleep(500);
+            robot.driveForwardSetDistance(-0.2, 1500);
         }
         if(targetPosition == 2){
             robot.driveForwardSetDistance(0.2, 535);
@@ -262,7 +318,17 @@ public class SuperRedTurn extends LinearOpMode{
             sleep(250);
             turnToAngle("CW", 0.2, -30);
             sleep(250);
+            robot.moveServo(robot.rotateBox, 0.0, 1000, 1000);
+            sleep(250);
             robot.driveForwardSetDistance(0.1, 200);
+            sleep(300);
+            robot.intake.setPower(1.0);
+            robot.driveForwardSetDistance(-0.2, 1500);
+            robot.turnDirection(0.05, 400, "CW");
+            sleep(1000);
+            robot.turnDirection(0.05, 400, "CCW");
+            sleep(500);
+            robot.driveForwardSetDistance(-0.2, 1500);
         }
         if(targetPosition == 3){
             robot.driveForwardSetDistance(0.2, 535);
@@ -273,7 +339,29 @@ public class SuperRedTurn extends LinearOpMode{
             sleep(250);
             turnToAngle("CW", 0.2, -30);
             sleep(250);
+            robot.moveServo(robot.rotateBox, 0.0, 1000, 1000);
+            sleep(250);
             robot.driveForwardSetDistance(0.1, 200);
+            sleep(300);
+            robot.intake.setPower(1.0);
+            robot.driveForwardSetDistance(-0.2, 1500);
+            robot.turnDirection(0.05, 400, "CW");
+            sleep(1000);
+            robot.turnDirection(0.05, 400, "CCW");
+            sleep(500);
+            robot.driveForwardSetDistance(-0.2, 1500);
         }
+    }
+
+    public void knockOffBall(int selection){
+
+        if (selection == 0) {
+            robot.rotateArm.setPosition(robot.ROTATE_LEFT);
+        }
+        if (selection == 1) {
+            robot.rotateArm.setPosition(robot.ROTATE_RIGHT);
+        }
+        sleep(100);
+        robot.rotateArm.setPosition(robot.ROTATE_MID);
     }
 }
