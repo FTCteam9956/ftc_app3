@@ -56,10 +56,10 @@ public class SuperTeleop extends LinearOpMode {
                 LF = 0; RF = 0; LR = 0; RR = 0;
 
                 // Get joystick values
-                Y1 = gamepad1.right_stick_y * joyScale; // invert so up is positive
+                Y1 = -gamepad1.right_stick_y * joyScale; // invert so up is positive
                 X1 = gamepad1.right_stick_x * joyScale;
-                // Y2 is not used at present
-                X2 = -gamepad1.left_stick_x * joyScale;
+                 // Y2 is not used at present
+                X2 = gamepad1.left_stick_x * joyScale;
 
                 // Forward/back movement
                 LF += Y1; RF += Y1; LR += Y1; RR += Y1;
@@ -94,6 +94,15 @@ public class SuperTeleop extends LinearOpMode {
                 }
                 else if(gamepad1.left_bumper){
                     robot.moveServo(robot.rotateBox, 0.0, 250, 500);
+                }
+                if(gamepad1.right_trigger > 0.5){
+                    robot.winch.setPower(-0.5);
+                    robot.rotateBox.setPosition(0.5);
+                }else if(gamepad1.left_trigger > 0.5){
+                    robot.winch.setPower(0.5);
+                    robot.rotateBox.setPosition(0.5);
+                }else{
+                    robot.winch.setPower(0);
                 }
 
                 if(endGameMode == 1){
