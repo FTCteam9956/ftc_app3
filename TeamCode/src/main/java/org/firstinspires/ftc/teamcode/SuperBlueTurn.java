@@ -300,13 +300,13 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(250);
             robot.driveForwardSetDistance(0.1, 200);
             sleep(300);
-            robot.intake.setPower(1.0);
-            robot.driveForwardSetDistance(-0.2, 1500);
-            robot.turnDirection(0.05, 400, "CW");
-            sleep(1000);
-            robot.turnDirection(0.05, 400, "CCW");
-            sleep(500);
-            robot.driveForwardSetDistance(-0.2, 1500);
+//            robot.intake.setPower(1.0);
+//            robot.driveForwardSetDistance(-0.2, 1500);
+//            robot.turnDirection(0.05, 400, "CW");
+//            sleep(1000);
+//            robot.turnDirection(0.05, 400, "CCW");
+//            sleep(500);
+//            robot.driveForwardSetDistance(-0.2, 1500);
         }
         if(targetPosition == 2){
             robot.driveForwardSetDistance(0.2, 535);
@@ -321,13 +321,13 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(250);
             robot.driveForwardSetDistance(0.1, 200);
             sleep(300);
-            robot.intake.setPower(1.0);
-            robot.driveForwardSetDistance(-0.2, 1500);
-            robot.turnDirection(0.05, 400, "CW");
-            sleep(1000);
-            robot.turnDirection(0.05, 400, "CCW");
-            sleep(500);
-            robot.driveForwardSetDistance(-0.2, 1500);
+//            robot.intake.setPower(1.0);
+//            robot.driveForwardSetDistance(-0.2, 1500);
+//            robot.turnDirection(0.05, 400, "CW");
+//            sleep(1000);
+//            robot.turnDirection(0.05, 400, "CCW");
+//            sleep(500);
+//            robot.driveForwardSetDistance(-0.2, 1500);
         }
         if(targetPosition == 3){
             robot.driveForwardSetDistance(0.2, 535);
@@ -342,13 +342,13 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(250);
             robot.driveForwardSetDistance(0.1, 200);
             sleep(300);
-            robot.intake.setPower(1.0);
-            robot.driveForwardSetDistance(-0.2, 1500);
-            robot.turnDirection(0.05, 400, "CW");
-            sleep(1000);
-            robot.turnDirection(0.05, 400, "CCW");
-            sleep(500);
-            robot.driveForwardSetDistance(-0.2, 1500);
+//            robot.intake.setPower(1.0);
+//            robot.driveForwardSetDistance(-0.2, 1500);
+//            robot.turnDirection(0.05, 400, "CW");
+//            sleep(1000);
+//            robot.turnDirection(0.05, 400, "CCW");
+//            sleep(500);
+//            robot.driveForwardSetDistance(-0.2, 1500);
         }
     }
 

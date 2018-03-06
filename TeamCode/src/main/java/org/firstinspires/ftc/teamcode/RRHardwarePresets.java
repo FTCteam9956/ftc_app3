@@ -27,8 +27,9 @@ public class RRHardwarePresets {
     public DcMotor right1;//Front Right Drive Motor
     public DcMotor right2;//Back Right Drive Motor
     public DcMotor intake;//Glyph Intake Motor
-    public DcMotor winch; //Raises Glyph Export
-//    public DcMotor relicArm; //Slides out Relic Arm
+    public DcMotor winch;//Raises Glyph Export
+    public DcMotor glyphFlip;
+    public DcMotor relicArm; //Slides out Relic Arm
 
     //Servos
     public Servo rotateArm; //Jewel Arm
@@ -48,18 +49,18 @@ public class RRHardwarePresets {
     public static final double RELIC_CLAW_CLOSED = 0;
     public static final double RELIC_TWIST_UP = 0;
     public static final double RELIC_TWIST_DOWN = 0;
-    public static final double JEWEL_ARM_UP = 0.0;
-    public static final double JEWEL_ARM_DOWN = 0.0;
-    public static final double ROTATE_RIGHT = 0.0;
-    public static final double ROTATE_LEFT = 0.0;
-    public static final double ROTATE_MID = 0.0;
+    public static final double JEWEL_ARM_UP = 0.05;
+    public static final double JEWEL_ARM_DOWN = 0.7;
+    public static final double ROTATE_RIGHT = 0.3;
+    public static final double ROTATE_LEFT = 0.7;
+    public static final double ROTATE_MID = 0.5;
 
     //Constructor
     public RRHardwarePresets() {
         System.out.println("Created new RRHardwarePresets Object!");
     }
 
-    public void init(HardwareMap hwm) {
+    public void init(HardwareMap hwm){
 
         //Mappings.
         HwMap = hwm;
@@ -69,14 +70,17 @@ public class RRHardwarePresets {
         right2 = HwMap.dcMotor.get("right2");
         intake = HwMap.dcMotor.get("intake");
         winch = HwMap.dcMotor.get("winch");
-//        relicArm = HwMap.dcMotor.get("relicArm");
+        relicArm = HwMap.dcMotor.get("relicArm");
         rotateArm = HwMap.servo.get("rotateArm");
         lowerArm = HwMap.servo.get("lowerArm");
         rotateBox = HwMap.servo.get("rotateBox");
+        glyphFlip = HwMap.dcMotor.get("glyphFlip");
 //        twist = HwMap.servo.get("twist");
 //        pinch = HwMap.servo.get("pinch");
 
         jewelArm = HwMap.colorSensor.get("jewelArm");
+        imu = HwMap.get(BNO055IMU.class, "imu");
+
 
         //DC Motor directions.
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -86,15 +90,17 @@ public class RRHardwarePresets {
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         winch.setDirection(DcMotorSimple.Direction.FORWARD);
 //        relicArm.setDirection(DcMotorSimple.Direction.FORWARD);
+        glyphFlip.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //DC Motor stop behavior.
-        left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        left2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        left2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        relicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        relicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        glyphFlip.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Sensor LED control.
         jewelArm.enableLed(true);
@@ -166,7 +172,7 @@ public class RRHardwarePresets {
         //Sets power for DC Motors.
         setMotorPower(power);
         //Waits while driving to position.
-        while (anyMotorsBusy()) {
+        while (anyMotorsBusy()){
             //Spinning.
             //Waiting for robot to arrive at destination.
         }
@@ -235,6 +241,7 @@ public class RRHardwarePresets {
     String formatAngle(AngleUnit angleUnit, double angle){
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
+
     public void turn(String direction, double power){
         if(direction == "CW"){
             left1.setPower(power);
