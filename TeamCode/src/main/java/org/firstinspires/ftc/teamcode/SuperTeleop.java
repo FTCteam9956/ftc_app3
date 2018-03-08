@@ -24,7 +24,7 @@ public class SuperTeleop extends LinearOpMode {
     // declare joystick position variables
     double X1; double Y1; double X2; double Y2;
     // operational constants
-    double joyScale = 0.93;
+    double joyScale = 1.02;
     double motorMax = 0.7; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
 
     @Override
@@ -58,7 +58,10 @@ public class SuperTeleop extends LinearOpMode {
             }
             if(endGameMode == 0) {
                 // Reset speed variables
-                LF = 0; RF = 0; LR = 0; RR = 0;
+                LF = 0;
+                RF = 0;
+                LR = 0;
+                RR = 0;
 
                 // Get joystick values
                 Y1 = -gamepad1.right_stick_y * joyScale; // invert so up is positive
@@ -67,11 +70,20 @@ public class SuperTeleop extends LinearOpMode {
                 X2 = gamepad1.left_stick_x * joyScale;
 
                 // Forward/back movement
-                LF += Y1; RF += Y1; LR += Y1; RR += Y1;
+                LF += Y1;
+                RF += Y1;
+                LR += Y1;
+                RR += Y1;
                 // Side to side movement
-                LF += X1; RF -= X1; LR += X1; RR -= X1;
+                LF += X1;
+                RF -= X1;
+                LR += X1;
+                RR -= X1;
                 //Rotation Movement
-                LF += X2; RF -= X2; LR -= X2; RR += X2;
+                LF += X2;
+                RF -= X2;
+                LR -= X2;
+                RR += X2;
 
                 // Clip motor power values to +-motorMax
                 LF = Math.max(-motorMax, Math.min(LF, motorMax));
@@ -96,11 +108,12 @@ public class SuperTeleop extends LinearOpMode {
                     robot.intake.setPower(0.0);
                 }
                 if (gamepad1.right_bumper) {
-                    robot.moveServo(robot.rotateBox, 0.65, 250, 500);
+                    robot.moveServo(robot.rotateBox, 0.63, 250, 250);
                 } else if (gamepad1.left_bumper) {
-                    robot.moveServo(robot.rotateBox, 0.0, 250, 500);
-                    robot.intake.setPower(0.0);
+                    robot.moveServo(robot.rotateBox, 0.0, 250, 250);
+                    //robot.intake.setPower(0.0);
                 }
+
 //                if(gamepad1.x){
 //                    robot.glyphFlip.setPower(-0.9);
 //                    sleep(650);
@@ -108,26 +121,50 @@ public class SuperTeleop extends LinearOpMode {
 //                    sleep(600);
 //                    robot.glyphFlip.setPower(0);
 //                }
+                if (gamepad1.dpad_right){
+                    robot.moveServo(robot.lowerArm, 0.66, 100, 100);
+                }
+                if (gamepad1.dpad_left){
+                    robot.moveServo(robot.lowerArm, 0.0, 100, 100);
+                }
 
                 if (gamepad1.x) {
                     robot.glyphFlip.setPower(0.90);
                     robot.glyphFlip.setTargetPosition(-50);
                     sleep(500);
-                   robot.glyphFlip.setTargetPosition(-5);
+                    robot.glyphFlip.setTargetPosition(-5);
                     sleep(500);
                     robot.glyphFlip.setPower(0.0);
 
                 }
-
-                if(gamepad1.right_trigger > 0.5){
-                    robot.winch.setPower(-0.5);
-                    robot.rotateBox.setPosition(0.3);
-                }else if(gamepad1.left_trigger > 0.5){
+            //This controls the winch and allows us to raise and lower it with limit switches to stop if from injuring itself.
+            if (robot.upperLimit.getState() == false) {
+                if (gamepad1.left_trigger > 0.5) {
+                        robot.winch.setPower(-0.5);
+                        robot.rotateBox.setPosition(0.3);
+            }else{
+                    robot.winch.setPower(0.0);
+                }
+            }
+            else if(robot.bottomLimit.getState() == false){
+                if (gamepad1.right_trigger > 0.5) {
                     robot.winch.setPower(0.5);
                     robot.rotateBox.setPosition(0.3);
-                }else{
+                }else {
+                    robot.winch.setPower(0.0);
+                }
+            }
+            else{
+                if (gamepad1.right_trigger > 0.5) {
+                    robot.winch.setPower(0.5);
+                    robot.rotateBox.setPosition(0.3);
+                } else if (gamepad1.left_trigger > 0.5) {
+                    robot.winch.setPower(-0.5);
+                    robot.rotateBox.setPosition(0.3);
+                } else {
                     robot.winch.setPower(0);
                 }
+            }
 
                 if(gamepad1.dpad_up){
                     robot.relicArm.setPower(0.75);
@@ -203,6 +240,11 @@ public class SuperTeleop extends LinearOpMode {
             telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
             telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
             telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
+            telemetry.addData("lowerArm", robot.lowerArm.getPosition());
+            telemetry.addData("rotateArm", robot.rotateArm.getPosition());
+            telemetry.addData("upperLimit",robot.upperLimit.getState());
+            telemetry.addData("lowerLimit",robot.bottomLimit.getState());
+
 //            telemetry.addData("Driver Mode", endGameMode);
 //            telemetry.addData("Color Red", robot.jewelArm.red());
 //            telemetry.addData("Color Blue", robot.jewelArm.blue());

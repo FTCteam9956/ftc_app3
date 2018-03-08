@@ -3,9 +3,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -38,6 +40,10 @@ public class RRHardwarePresets {
 //    public Servo twist; //Relic Arm
 //    public Servo pinch; //Relic Arm
 
+    //Limits
+    public DigitalChannel upperLimit;
+    public DigitalChannel bottomLimit;
+
     //Sensors
     public ColorSensor jewelArm;
     public BNO055IMU imu;
@@ -49,11 +55,11 @@ public class RRHardwarePresets {
     public static final double RELIC_CLAW_CLOSED = 0;
     public static final double RELIC_TWIST_UP = 0;
     public static final double RELIC_TWIST_DOWN = 0;
-    public static final double JEWEL_ARM_UP = 0.05;
-    public static final double JEWEL_ARM_DOWN = 0.7;
-    public static final double ROTATE_RIGHT = 0.3;
-    public static final double ROTATE_LEFT = 0.7;
-    public static final double ROTATE_MID = 0.5;
+    public static final double JEWEL_ARM_UP = 0.7;
+    public static final double JEWEL_ARM_DOWN = 0.01;
+    public static final double ROTATE_RIGHT = 0.7;
+    public static final double ROTATE_LEFT = 0.0;
+    public static final double ROTATE_MID = 0.3;
 
     //Constructor
     public RRHardwarePresets() {
@@ -75,6 +81,8 @@ public class RRHardwarePresets {
         lowerArm = HwMap.servo.get("lowerArm");
         rotateBox = HwMap.servo.get("rotateBox");
         glyphFlip = HwMap.dcMotor.get("glyphFlip");
+        upperLimit = HwMap.digitalChannel.get("upperLimit");
+        bottomLimit = HwMap.digitalChannel.get("bottomLimit");
 //        twist = HwMap.servo.get("twist");
 //        pinch = HwMap.servo.get("pinch");
 
@@ -93,10 +101,10 @@ public class RRHardwarePresets {
         glyphFlip.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //DC Motor stop behavior.
-//        left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        left2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         relicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -165,10 +173,10 @@ public class RRHardwarePresets {
     public void driveForwardSetDistance(double power, int distance) {
         //Resets encoders by setting to STOP_AND_RESET_ENCODER mode.
         setRunMode("STOP_AND_RESET_ENCODER");
-        //Sets target distance. Set to negative distance because motor was running backwards.
-        setAllTargetPositions(-distance);
         //Sets to RUN_TO_POSITION mode
         setRunMode("RUN_TO_POSITION");
+        //Sets target distance. Set to negative distance because motor was running backwards.
+        setAllTargetPositions(-distance);
         //Sets power for DC Motors.
         setMotorPower(power);
         //Waits while driving to position.
@@ -255,5 +263,28 @@ public class RRHardwarePresets {
             right1.setPower(power);
             right2.setPower(power);
         }
+    }
+
+    public void initServoPositions(){
+        this.lowerArm.setPosition(this.JEWEL_ARM_UP);
+        this.rotateArm.setPosition(this.ROTATE_MID);
+    }
+    public void oneEncoderDrive(double power, int distance){
+        //Resets encoders by setting to STOP_AND_RESET_ENCODER mode.
+        setRunMode("STOP_AND_RESET_ENCODER");
+        //Sets to RUN_TO_POSITION mode
+        setRunMode("RUN_TO_POSITION");
+        //Sets target distance.
+        this.left1.setTargetPosition(distance);
+        //Sets power for DC Motors.
+        setMotorPower(power);
+        //Waits while driving to position.
+        while (this.left1.getCurrentPosition() < distance){
+
+        }
+        //Stops driving by setting power to 0.0.
+        setMotorPower(0.0);
+        //Sets back to RUN_USING_ENCODER mode.
+        setRunMode("RUN_USING_ENCODER");
     }
 }
