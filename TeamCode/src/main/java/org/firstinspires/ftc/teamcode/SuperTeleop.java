@@ -102,7 +102,7 @@ public class SuperTeleop extends LinearOpMode {
                     robot.intake.setPower(0.5);
                 }
                 if (gamepad1.b) {
-                    robot.intake.setPower(.20);
+                    robot.intake.setPower(-.5);
                 }
                 if (gamepad1.y) {
                     robot.intake.setPower(0.0);

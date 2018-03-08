@@ -55,7 +55,7 @@ public class RRHardwarePresets {
     public static final double RELIC_CLAW_CLOSED = 0;
     public static final double RELIC_TWIST_UP = 0;
     public static final double RELIC_TWIST_DOWN = 0;
-    public static final double JEWEL_ARM_UP = 0.7;
+    public static final double JEWEL_ARM_UP = 0.65;
     public static final double JEWEL_ARM_DOWN = 0.01;
     public static final double ROTATE_RIGHT = 0.7;
     public static final double ROTATE_LEFT = 0.0;
@@ -181,8 +181,7 @@ public class RRHardwarePresets {
         setMotorPower(power);
         //Waits while driving to position.
         while (anyMotorsBusy()){
-            //Spinning.
-            //Waiting for robot to arrive at destination.
+
         }
         //Stops driving by setting power to 0.0.
         setMotorPower(0.0);
