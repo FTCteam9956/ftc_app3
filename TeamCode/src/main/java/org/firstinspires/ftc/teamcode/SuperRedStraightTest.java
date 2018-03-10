@@ -93,54 +93,54 @@ public class SuperRedStraightTest extends LinearOpMode {
         if (targetPosition == 0) {
             targetPosition = 3;
         }
-//        robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
-//
-//        sleep(300);
-//
-//        int loopBreak = 0;
-//        while (loopBreak == 0) {
-//            sleep(300);
-//            if (robot.jewelArm.red() > robot.jewelArm.blue()) {
-//                knockOffBall(0); //go left
-//                telemetry.addData("Status", "Confirmed Red Ball!");
-//                sleep(500);
-//                loopBreak = 1;
-//            } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
-//                if (robot.jewelArm.blue() > 27) {
-//                    knockOffBall(1); //go right
-//                    telemetry.addData("Status", "Confirmed Blue Ball!");
-//                    sleep(500);
-//                    loopBreak = 1;
-//                } else {
-//                    telemetry.addData("Status", "Cannot determine color! Double Checking!");
-//                    robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_UP, 200, 300);
-//                    sleep(300);
-//                    robot.rotateArm.setPosition(0.32);
-//                    robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
-//                    sleep(300);
-//                    if (robot.jewelArm.red() > robot.jewelArm.blue()) {
-//                        knockOffBall(0); //Go left
-//                        telemetry.addData("Status", "Confirmed Red Ball!");
-//                        sleep(500);
-//                        loopBreak = 1;
-//                    } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
-//                        if (robot.jewelArm.blue() > 27) {
-//                            knockOffBall(1); //go right
-//                            telemetry.addData("Status", "Confirmed Blue Ball!");
-//                            sleep(500);
-//                            loopBreak = 1;
-//                        } else {
-//                            telemetry.addData("Status", "Cannot determine color! You screwed up!");
-//                            loopBreak = 1;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        telemetry.update();
-//        sleep(300);
-//        robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_UP, 200, 300);
-//        sleep(500);
+        robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
+
+        sleep(300);
+
+        int loopBreak = 0;
+        while (loopBreak == 0) {
+            sleep(300);
+            if (robot.jewelArm.red() > robot.jewelArm.blue()) {
+                knockOffBall(0); //go left
+                telemetry.addData("Status", "Confirmed Red Ball!");
+                sleep(500);
+                loopBreak = 1;
+            } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
+                if (robot.jewelArm.blue() > 27) {
+                    knockOffBall(1); //go right
+                    telemetry.addData("Status", "Confirmed Blue Ball!");
+                    sleep(500);
+                    loopBreak = 1;
+                } else {
+                    telemetry.addData("Status", "Cannot determine color! Double Checking!");
+                    robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_UP, 200, 300);
+                    sleep(300);
+                    robot.rotateArm.setPosition(0.32);
+                    robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
+                    sleep(300);
+                    if (robot.jewelArm.red() > robot.jewelArm.blue()) {
+                        knockOffBall(0); //Go left
+                        telemetry.addData("Status", "Confirmed Red Ball!");
+                        sleep(500);
+                        loopBreak = 1;
+                    } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
+                        if (robot.jewelArm.blue() > 27) {
+                            knockOffBall(1); //go right
+                            telemetry.addData("Status", "Confirmed Blue Ball!");
+                            sleep(500);
+                            loopBreak = 1;
+                        } else {
+                            telemetry.addData("Status", "Cannot determine color! You screwed up!");
+                            loopBreak = 1;
+                        }
+                    }
+                }
+            }
+        }
+        telemetry.update();
+        sleep(300);
+        robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_UP, 200, 300);
+        sleep(500);
 
 
 //        sleep(50);
