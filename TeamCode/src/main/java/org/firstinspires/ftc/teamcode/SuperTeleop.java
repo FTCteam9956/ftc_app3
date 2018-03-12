@@ -58,7 +58,7 @@ public class SuperTeleop extends LinearOpMode {
             if(endGameMode == 0) {
                 if(gamepad1.start){
                     endGameMode = 1;
-                    sleep(100);
+                    sleep(20);
                 }
                 // Reset speed variables
                 LF = 0;
@@ -102,7 +102,7 @@ public class SuperTeleop extends LinearOpMode {
 
                 // Intake Speed and Controls
                 if (gamepad1.a) {
-                    robot.intake.setPower(0.6);
+                    robot.intake.setPower(0.65);
                 }
                 if (gamepad1.b) {
                     robot.intake.setPower(-.9);
@@ -174,7 +174,7 @@ public class SuperTeleop extends LinearOpMode {
             if(endGameMode == 1){
                 if(gamepad1.start) {
                     endGameMode = 0;
-                    sleep(100);
+                    sleep(20);
                 }
                 leftPower = (gamepad1.left_stick_y + gamepad1.left_stick_x);
                 rightPower = (gamepad1.left_stick_y - gamepad1.left_stick_x);
