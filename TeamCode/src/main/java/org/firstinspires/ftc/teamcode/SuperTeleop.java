@@ -16,6 +16,8 @@ public class SuperTeleop extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     public int endGameMode = 0;
+    public float leftPower;
+    public float rightPower;
     public static int flipPosition = -70;
     public int relicClawMode = 0;
     public int relicTwistMode = 0;
@@ -53,12 +55,11 @@ public class SuperTeleop extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while(opModeIsActive()){
-            if(gamepad1.start){
-                endGameMode = 1;
-            }else if(gamepad2.start){
-                endGameMode = 0;
-            }
             if(endGameMode == 0) {
+                if(gamepad1.start){
+                    endGameMode = 1;
+                    sleep(100);
+                }
                 // Reset speed variables
                 LF = 0;
                 RF = 0;
@@ -66,10 +67,10 @@ public class SuperTeleop extends LinearOpMode {
                 RR = 0;
 
                 // Get joystick values
-                Y1 = gamepad1.right_stick_y * joyScale; // invert so up is positive
-                X1 = gamepad1.right_stick_x * joyScale;
+                Y1 = gamepad1.left_stick_y * joyScale; // invert so up is positive
+                X1 = gamepad1.left_stick_x * joyScale;
                 // Y2 is not used at present
-                X2 = -gamepad1.left_stick_x * joyScale;
+                X2 = -gamepad1.right_stick_x * joyScale;
 
                 // Forward/back movement
                 LF += Y1;
@@ -101,16 +102,16 @@ public class SuperTeleop extends LinearOpMode {
 
                 // Intake Speed and Controls
                 if (gamepad1.a) {
-                    robot.intake.setPower(0.5);
+                    robot.intake.setPower(0.6);
                 }
                 if (gamepad1.b) {
-                    robot.intake.setPower(-.5);
+                    robot.intake.setPower(-.9);
                 }
                 if (gamepad1.y) {
                     robot.intake.setPower(0.0);
                 }
                 if (gamepad1.right_bumper) {
-                    robot.rotateBox.setPosition(0.63);
+                    robot.rotateBox.setPosition(0.65);
                 } else if (gamepad1.left_bumper) {
                     robot.rotateBox.setPosition(0.0);
                     //robot.intake.setPower(0.0);
@@ -140,7 +141,7 @@ public class SuperTeleop extends LinearOpMode {
 
                 }
             //This controls the winch and allows us to raise and lower it with limit switches to stop if from injuring itself.
-            if (robot.upperLimit.getState() == false) {
+             if (robot.upperLimit.getState() == false) {
                 if (gamepad1.left_trigger > 0.5) {
                         robot.winch.setPower(-0.5);
                     robot.rotateBox.setPosition(0.0);
@@ -169,66 +170,44 @@ public class SuperTeleop extends LinearOpMode {
                     robot.winch.setPower(0);
                 }
             }
-
-                if(gamepad1.dpad_up){
-                    robot.relicArm.setPower(0.75);
-                }else if(gamepad1.dpad_down){
-                    robot.relicArm.setPower(-0.75);
-                }else{
-                    robot.relicArm.setPower(0.0);
-                }
             }
             if(endGameMode == 1){
-                    // Reset speed variables
-                    LF = 0; RF = 0; LR = 0; RR = 0;
+                if(gamepad1.start) {
+                    endGameMode = 0;
+                    sleep(100);
+                }
+                leftPower = (gamepad1.left_stick_y + gamepad1.left_stick_x);
+                rightPower = (gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-                    // Get joystick values
-                    Y1 = -gamepad2.right_stick_y * joyScale; // invert so up is positive
-                    X1 = gamepad2.right_stick_x * joyScale;
-                    Y2 = -gamepad2.left_stick_y * joyScale; // Y2 is not used at present
-                    X2 = gamepad2.left_stick_x * joyScale;
-
-                    // Forward/back movement
-                    LF += Y1; RF += Y1; LR += Y1; RR += Y1;
-                    // Side to side movement
-                    LF += X1; RF -= X1; LR += X1; RR -= X1;
-                    //Rotation Movement
-                    LF += X2; RF -= X2; LR -= X2; RR += X2;
-
-                    // Clip motor power values to +-motorMax
-                    LF = Math.max(-motorMax, Math.min(LF, motorMax));
-                    RF = Math.max(-motorMax, Math.min(RF, motorMax));
-                    LR = Math.max(-motorMax, Math.min(LR, motorMax));
-                    RR = Math.max(-motorMax, Math.min(RR, motorMax));
-
-                    // Send values to the motors
-                    robot.left1.setPower(LF);
-                    robot.right1.setPower(RF);
-                    robot.left2.setPower(LR);
-                    robot.right2.setPower(RR);
+                robot.left1.setPower(leftPower / 2);
+                robot.left2.setPower(leftPower / 2);
+                robot.right1.setPower(rightPower / 2);
+                robot.right2.setPower(rightPower / 2);
 
                     //Controls our linear slide
+                robot.relicArm.setPower(-gamepad1.right_stick_y);
 
                     //Controls the claw on our linear slide
-//                    if (gamepad2.left_bumper && relicClawMode == 0) {
-//                        robot.pinch.setPosition(robot.RELIC_CLAW_CLOSED); //Closes claw
-//                        sleep(500);
-//                        relicClawMode++;
-//                    } else if (gamepad2.left_bumper && relicClawMode == 1) {
-//                        robot.pinch.setPosition(robot.RELIC_CLAW_OPENED); //Opens claw
-//                        sleep(500);
-//                        relicClawMode--;
-//                    }
-//                    //Slider Twisting Controls
-//                    if (gamepad2.right_bumper && relicTwistMode == 0) {
-//                        robot.twist.setPosition(robot.RELIC_TWIST_UP); //Twists the claw up
-//                        sleep(500);
-//                        relicTwistMode++;
-//                    } else if (gamepad2.right_bumper && relicTwistMode == 1) {
-//                        robot.twist.setPosition(robot.RELIC_TWIST_DOWN); // Twists the claw down
-//                        sleep(500);
-//                        relicTwistMode--;
-//                    }
+                    if (gamepad1.left_bumper && relicClawMode == 0) {
+                        robot.pinch.setPosition(0); //Closes claw
+                        sleep(500);
+                        relicClawMode++;
+                    } else if (gamepad1.left_bumper && relicClawMode == 1) {
+                        robot.pinch.setPosition(1); //Opens claw
+                        sleep(500);
+                        relicClawMode--;
+                    }
+                    //Slider Twisting Controls
+                    if (gamepad1.right_bumper && relicTwistMode == 0) {
+                        robot.twist.setPosition(1); //Twists the claw up'
+                        sleep(500);
+                        relicTwistMode++;
+                    } else if (gamepad1.right_bumper && relicTwistMode == 1) {
+                        robot.pinch.setPosition(1);
+                        robot.twist.setPosition(0); // Twists the claw down
+                        sleep(500);
+                        relicTwistMode--;
+                    }
                 }
 
             // Send some useful parameters to the driver station
@@ -236,19 +215,21 @@ public class SuperTeleop extends LinearOpMode {
 //            telemetry.addData("RF", "%.3f", RF);
 //            telemetry.addData("LR", "%.3f", LR);
 //            telemetry.addData("RR", "%.3f", RR);
-            telemetry.addData("Left1 Speed", robot.left1.getPower());
-            telemetry.addData("Left2 Speed", robot.left2.getPower());
-            telemetry.addData("Right1 Speed", robot.right1.getPower());
-            telemetry.addData("Right2 Speed", robot.right2.getPower());
-            telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
-            telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
-            telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
-            telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
+//            telemetry.addData("Left1 Speed", robot.left1.getPower());
+//            telemetry.addData("Left2 Speed", robot.left2.getPower());
+//            telemetry.addData("Right1 Speed", robot.right1.getPower());
+//            telemetry.addData("Right2 Speed", robot.right2.getPower());
+//            telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
+//            telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
+//            telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
+//            telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
+            telemetry.addData("endGameMode", endGameMode);
+            telemetry.addData("pincher", robot.pinch.getPosition());
+            telemetry.addData("Twister", robot.twist.getPosition());
 //            telemetry.addData("lowerArm", robot.lowerArm.getPosition());
 //            telemetry.addData("rotateArm", robot.rotateArm.getPosition());
 //            telemetry.addData("upperLimit",robot.upperLimit.getState());
 //            telemetry.addData("lowerLimit",robot.bottomLimit.getState());
-
 //            telemetry.addData("Driver Mode", endGameMode);
 //            telemetry.addData("Color Red", robot.jewelArm.red());
 //            telemetry.addData("Color Blue", robot.jewelArm.blue());

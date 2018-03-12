@@ -37,8 +37,8 @@ public class RRHardwarePresets {
     public Servo rotateArm; //Jewel Arm
     public Servo lowerArm; //Jewel Arm
     public Servo rotateBox; //Glyph Intake
-//    public Servo twist; //Relic Arm
-//    public Servo pinch; //Relic Arm
+    public Servo twist; //Relic Arm
+    public Servo pinch; //Relic Arm
 
     //Limits
     public DigitalChannel upperLimit;
@@ -52,9 +52,9 @@ public class RRHardwarePresets {
     Acceleration gravity;
 
     public static final double RELIC_CLAW_OPENED = 0;
-    public static final double RELIC_CLAW_CLOSED = 0;
+    public static final double RELIC_CLAW_CLOSED = 1.0;
     public static final double RELIC_TWIST_UP = 0;
-    public static final double RELIC_TWIST_DOWN = 0;
+    public static final double RELIC_TWIST_DOWN = 0.8;
     public static final double JEWEL_ARM_UP = 0.65;
     public static final double JEWEL_ARM_DOWN = 0.01;
     public static final double ROTATE_RIGHT = 0.7;
@@ -83,8 +83,8 @@ public class RRHardwarePresets {
         glyphFlip = HwMap.dcMotor.get("glyphFlip");
         upperLimit = HwMap.digitalChannel.get("upperLimit");
         bottomLimit = HwMap.digitalChannel.get("bottomLimit");
-//        twist = HwMap.servo.get("twist");
-//        pinch = HwMap.servo.get("pinch");
+        twist = HwMap.servo.get("twist");
+        pinch = HwMap.servo.get("pinch");
 
         jewelArm = HwMap.colorSensor.get("jewelArm");
         imu = HwMap.get(BNO055IMU.class, "imu");
