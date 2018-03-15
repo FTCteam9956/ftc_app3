@@ -442,7 +442,6 @@ public class SuperRedTurn extends LinearOpMode{
             robot.right2.setPower(0.2);
             sleep(1000);
         }
-
         robot.glyphFlip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleep(50);
         robot.glyphFlip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -455,10 +454,6 @@ public class SuperRedTurn extends LinearOpMode{
             robot.glyphFlip.setPower(1);
             telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
         }
-//        while(robot.glyphFlip.getCurrentPosition() > -36 && robot.glyphFlip.getCurrentPosition() < -20){
-//            robot.glyphFlip.setPower(-0.13);
-//            telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
-//        }
         robot.glyphFlip.setPower(0);
         robot.rotateBox.setPosition(0.34);
         sleep(500);
