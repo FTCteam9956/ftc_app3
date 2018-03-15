@@ -132,13 +132,21 @@ public class SuperTeleop extends LinearOpMode {
                 }
 
                 if (gamepad1.x) {
-                    robot.glyphFlip.setPower(0.90);
-                    robot.glyphFlip.setTargetPosition(-50);
-                    sleep(500);
-                    robot.glyphFlip.setTargetPosition(-5);
-                    sleep(500);
-                    robot.glyphFlip.setPower(0.0);
-
+//                    robot.glyphFlip.setPower(0.90);
+//                    robot.glyphFlip.setTargetPosition(-50);
+//                    sleep(500);
+//                    robot.glyphFlip.setTargetPosition(-5);
+//                    sleep(500);
+//                    robot.glyphFlip.setPower(0.0);
+                    robot.glyphFlip.setTargetPosition(-36);
+                    sleep(50);
+                    robot.glyphFlip.setPower(1);
+                    sleep(50);
+                    while(robot.glyphFlip.getCurrentPosition() > -35){
+                        robot.glyphFlip.setPower(1);
+                        telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
+                    }
+                    robot.glyphFlip.setPower(0);
                 }
             //This controls the winch and allows us to raise and lower it with limit switches to stop if from injuring itself.
              if (robot.upperLimit.getState() == false) {
