@@ -94,24 +94,6 @@ public class SuperBlueStraight extends LinearOpMode{
             targetPosition = 3;
         }
 
-//        robot.glyphFlip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.glyphFlip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.rotateBox.setPosition(0.4);
-//        sleep(500);
-//        robot.glyphFlip.setTargetPosition(-24);
-//        robot.glyphFlip.setPower(-0.50);
-//        sleep(300);
-//        robot.glyphFlip.setTargetPosition(20);
-//        robot.glyphFlip.setPower(0.7);
-//        sleep(750);
-//        robot.glyphFlip.setPower(0.0);
-//        robot.rotateBox.setPosition(0.0);
-//        robot.driveForwardSetDistance(0.3, 3397);
-
-
-
-
-
         robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
 
         sleep(300);
@@ -445,6 +427,28 @@ public class SuperBlueStraight extends LinearOpMode{
             robot.right1.setPower(0.1);
             robot.right2.setPower(0.1);
         }
+        robot.rotateBox.setPosition(0.68);
+        sleep(1000);
+        robot.glyphFlip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(50);
+        robot.glyphFlip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        sleep(50);
+        robot.glyphFlip.setTargetPosition(-30);
+        sleep(50);
+        robot.glyphFlip.setPower(1);
+        sleep(50);
+
+
+        while(robot.glyphFlip.getCurrentPosition() > -10){
+            robot.glyphFlip.setPower(1);
+            telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
+        }
+        while(robot.glyphFlip.getCurrentPosition() > -30 && robot.glyphFlip.getCurrentPosition() < -10){
+            robot.glyphFlip.setPower(-0.13);
+            telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
+        }
+        robot.rotateBox.setPosition(0.34);
+        sleep(500);
     }
 
     public int lookForVuMark(VuforiaTrackable rTemplate) {

@@ -108,7 +108,7 @@ public class RRHardwarePresets {
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         relicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        glyphFlip.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        glyphFlip.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         //Sensor LED control.
         jewelArm.enableLed(true);

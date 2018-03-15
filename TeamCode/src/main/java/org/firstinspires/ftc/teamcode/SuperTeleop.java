@@ -15,7 +15,7 @@ public class SuperTeleop extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    public int endGameMode = 0;
+    public int endGameMode = 1;
     public float leftPower;
     public float rightPower;
     public static int flipPosition = -70;
@@ -102,7 +102,7 @@ public class SuperTeleop extends LinearOpMode {
 
                 // Intake Speed and Controls
                 if (gamepad1.a) {
-                    robot.intake.setPower(0.65);
+                    robot.intake.setPower(0.70);
                 }
                 if (gamepad1.b) {
                     robot.intake.setPower(-.9);
@@ -111,9 +111,9 @@ public class SuperTeleop extends LinearOpMode {
                     robot.intake.setPower(0.0);
                 }
                 if (gamepad1.right_bumper) {
-                    robot.rotateBox.setPosition(0.65);
+                    robot.rotateBox.setPosition(0.68);
                 } else if (gamepad1.left_bumper) {
-                    robot.rotateBox.setPosition(0.0);
+                    robot.rotateBox.setPosition(0.34);
                     //robot.intake.setPower(0.0);
                 }
 
@@ -144,10 +144,10 @@ public class SuperTeleop extends LinearOpMode {
              if (robot.upperLimit.getState() == false) {
                 if (gamepad1.left_trigger > 0.5) {
                         robot.winch.setPower(-0.5);
-                    robot.rotateBox.setPosition(0.0);
+                    robot.rotateBox.setPosition(0.21); //0
             }else{
                     robot.winch.setPower(0.0);
-                    robot.rotateBox.setPosition(0.0);
+                    robot.rotateBox.setPosition(0.21); //0
                 }
             }
             else if(robot.bottomLimit.getState() == false){
@@ -162,10 +162,10 @@ public class SuperTeleop extends LinearOpMode {
                 robot.intake.setPower(0.0);
                 if (gamepad1.right_trigger > 0.5) {
                     robot.winch.setPower(0.5);
-                    robot.rotateBox.setPosition(0.3);
+                    robot.rotateBox.setPosition(0.34);//Bucket at mid postion
                 } else if (gamepad1.left_trigger > 0.5) {
                     robot.winch.setPower(-0.5);
-                    robot.rotateBox.setPosition(0.3);
+                    robot.rotateBox.setPosition(0.34);//Bucket at mid postion
                 } else {
                     robot.winch.setPower(0);
                 }

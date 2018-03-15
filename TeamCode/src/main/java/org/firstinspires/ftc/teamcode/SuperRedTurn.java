@@ -349,10 +349,10 @@ public class SuperRedTurn extends LinearOpMode{
             sleep(1000);
 
         }if (targetPosition == 3) {
-            robot.left1.setTargetPosition(-1000);
-            robot.left2.setTargetPosition(1000);
-            robot.right1.setTargetPosition(-1000); //strafe left
-            robot.right2.setTargetPosition(1000);
+            robot.left1.setTargetPosition(-1200);
+            robot.left2.setTargetPosition(1200);
+            robot.right1.setTargetPosition(-1200); //strafe left
+            robot.right2.setTargetPosition(1200);
             robot.left1.setPower(-0.2);
             robot.left2.setPower(0.2);
             robot.right1.setPower(-0.2);
@@ -373,14 +373,14 @@ public class SuperRedTurn extends LinearOpMode{
 
             robot.setRunMode("RUN_USING_ENCODER");
             sleep(50);
-            while (robot.angles.firstAngle > 143 || robot.angles.firstAngle < 133) {
+            while (robot.angles.firstAngle > 140 || robot.angles.firstAngle < 130) {
                 telemetry.update();
-                if (robot.angles.firstAngle > 143) {
+                if (robot.angles.firstAngle > 140) {
                     robot.left1.setPower(0.13);
                     robot.left2.setPower(0.13);
                     robot.right1.setPower(-0.13);
                     robot.right2.setPower(-0.13);
-                } else if (robot.angles.firstAngle < 133) {
+                } else if (robot.angles.firstAngle < 130) {
                     robot.left1.setPower(-0.13);
                     robot.left2.setPower(-0.13);
                     robot.right1.setPower(0.13);
@@ -398,10 +398,10 @@ public class SuperRedTurn extends LinearOpMode{
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
 
-            robot.left1.setTargetPosition(-150);
-            robot.left2.setTargetPosition(-150);
-            robot.right1.setTargetPosition(-150);
-            robot.right2.setTargetPosition(-150);
+            robot.left1.setTargetPosition(-250);
+            robot.left2.setTargetPosition(-250);
+            robot.right1.setTargetPosition(-250);
+            robot.right2.setTargetPosition(-250);
             robot.left1.setPower(-0.2);
             robot.left2.setPower(-0.2);
             robot.right1.setPower(-0.2);
@@ -432,16 +432,36 @@ public class SuperRedTurn extends LinearOpMode{
             sleep(50);
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
-            robot.left1.setTargetPosition(150);
-            robot.left2.setTargetPosition(150);
-            robot.right1.setTargetPosition(150);
-            robot.right2.setTargetPosition(150);
+            robot.left1.setTargetPosition(200);
+            robot.left2.setTargetPosition(200);
+            robot.right1.setTargetPosition(200);
+            robot.right2.setTargetPosition(200);
             robot.left1.setPower(0.2);
             robot.left2.setPower(0.2);
             robot.right1.setPower(0.2);
             robot.right2.setPower(0.2);
             sleep(1000);
         }
+
+        robot.glyphFlip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sleep(50);
+        robot.glyphFlip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        sleep(50);
+        robot.glyphFlip.setTargetPosition(-36);
+        sleep(50);
+        robot.glyphFlip.setPower(1);
+        sleep(50);
+        while(robot.glyphFlip.getCurrentPosition() > -35){
+            robot.glyphFlip.setPower(1);
+            telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
+        }
+//        while(robot.glyphFlip.getCurrentPosition() > -36 && robot.glyphFlip.getCurrentPosition() < -20){
+//            robot.glyphFlip.setPower(-0.13);
+//            telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
+//        }
+        robot.glyphFlip.setPower(0);
+        robot.rotateBox.setPosition(0.34);
+        sleep(500);
     }
     void composeTelemetry() {
 
