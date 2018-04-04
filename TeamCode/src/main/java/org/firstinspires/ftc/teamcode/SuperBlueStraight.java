@@ -90,8 +90,9 @@ public class SuperBlueStraight extends LinearOpMode{
         robot.initServoPositions();
         robot.rotateBox.setPosition(0.3);
         sleep(500);
-        if (targetPosition == 0) {
+        if (targetPosition == 4){
             targetPosition = 3;
+            telemetry.addData("status", targetPosition);
         }
 
         robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);

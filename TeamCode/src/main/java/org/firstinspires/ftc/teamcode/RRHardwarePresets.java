@@ -39,6 +39,7 @@ public class RRHardwarePresets {
     public Servo rotateBox; //Glyph Intake
     public Servo twist; //Relic Arm
     public Servo pinch; //Relic Arm
+    public Servo bucketFinger; //Fingers on the Bucket
 
     //Limits
     public DigitalChannel upperLimit;
@@ -60,13 +61,15 @@ public class RRHardwarePresets {
     public static final double ROTATE_RIGHT = 0.7;
     public static final double ROTATE_LEFT = 0.0;
     public static final double ROTATE_MID = 0.3;
+    public static final double FINGER_OPEN = 1.0;
+    public static final double FINGER_CLOSED = 0.0;
 
     //Constructor
     public RRHardwarePresets() {
         System.out.println("Created new RRHardwarePresets Object!");
     }
 
-    public void init(HardwareMap hwm){
+    public void init(HardwareMap hwm) {
 
         //Mappings.
         HwMap = hwm;
@@ -85,6 +88,7 @@ public class RRHardwarePresets {
         bottomLimit = HwMap.digitalChannel.get("bottomLimit");
         twist = HwMap.servo.get("twist");
         pinch = HwMap.servo.get("pinch");
+        bucketFinger = HwMap.servo.get("bucketFinger");
 
         jewelArm = HwMap.colorSensor.get("jewelArm");
         imu = HwMap.get(BNO055IMU.class, "imu");
@@ -180,7 +184,7 @@ public class RRHardwarePresets {
         //Sets power for DC Motors.
         setMotorPower(power);
         //Waits while driving to position.
-        while (anyMotorsBusy()){
+        while (anyMotorsBusy()) {
 
         }
         //Stops driving by setting power to 0.0.
@@ -241,22 +245,22 @@ public class RRHardwarePresets {
         right2.setTargetPosition(distance);
     }
 
-    String formatDegrees(double degrees){
+    String formatDegrees(double degrees) {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
-    String formatAngle(AngleUnit angleUnit, double angle){
+    String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
-    public void turn(String direction, double power){
-        if(direction == "CW"){
+    public void turn(String direction, double power) {
+        if (direction == "CW") {
             left1.setPower(power);
             left2.setPower(power);
             right1.setPower(-1 * power);
             right2.setPower(-1 * power);
         }
-        if(direction == "CCW"){
+        if (direction == "CCW") {
             left1.setPower(-1 * power);
             left2.setPower(-1 * power);
             right1.setPower(power);
@@ -264,11 +268,13 @@ public class RRHardwarePresets {
         }
     }
 
-    public void initServoPositions(){
+    public void initServoPositions() {
         this.lowerArm.setPosition(this.JEWEL_ARM_UP);
         this.rotateArm.setPosition(this.ROTATE_MID);
+        this.bucketFinger.setPosition(this.FINGER_OPEN);
     }
-    public void oneEncoderDrive(double power, int distance){
+
+    public void oneEncoderDrive(double power, int distance) {
         //Resets encoders by setting to STOP_AND_RESET_ENCODER mode.
         setRunMode("STOP_AND_RESET_ENCODER");
         //Sets to RUN_TO_POSITION mode
@@ -278,7 +284,7 @@ public class RRHardwarePresets {
         //Sets power for DC Motors.
         setMotorPower(power);
         //Waits while driving to position.
-        while (this.left1.getCurrentPosition() < distance){
+        while (this.left1.getCurrentPosition() < distance) {
 
         }
         //Stops driving by setting power to 0.0.

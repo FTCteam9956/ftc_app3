@@ -185,14 +185,14 @@ public class SuperBlueTurn extends LinearOpMode{
 
             robot.setRunMode("RUN_USING_ENCODER");
             sleep(50);
-            while (robot.angles.firstAngle > 30 || robot.angles.firstAngle < 17) {
+            while (robot.angles.firstAngle > 35 || robot.angles.firstAngle < 22) { //30-17
                 telemetry.update();
-                if (robot.angles.firstAngle > 30) {
+                if (robot.angles.firstAngle > 35) {
                     robot.left1.setPower(0.13);
                     robot.left2.setPower(0.13);
                     robot.right1.setPower(-0.13);
                     robot.right2.setPower(-0.13);
-                } else if (robot.angles.firstAngle < 17) {
+                } else if (robot.angles.firstAngle < 22) {
                     robot.left1.setPower(-0.13);
                     robot.left2.setPower(-0.13);
                     robot.right1.setPower(0.13);
@@ -210,16 +210,16 @@ public class SuperBlueTurn extends LinearOpMode{
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
 
-            robot.left1.setTargetPosition(-150);
-            robot.left2.setTargetPosition(-150);
-            robot.right1.setTargetPosition(-150);
-            robot.right2.setTargetPosition(-150);
-            robot.left1.setPower(-0.2);
-            robot.left2.setPower(-0.2);
-            robot.right1.setPower(-0.2);
-            robot.right2.setPower(-0.2);
-            sleep(100);
-            while(robot.left1.isBusy()){}
+//            robot.left1.setTargetPosition(-150);
+//            robot.left2.setTargetPosition(-150);
+//            robot.right1.setTargetPosition(-150);
+//            robot.right2.setTargetPosition(-150);
+//            robot.left1.setPower(-0.2);
+//            robot.left2.setPower(-0.2);
+//            robot.right1.setPower(-0.2);
+//            robot.right2.setPower(-0.2);
+//            sleep(100);
+//            while(robot.left1.isBusy()){}
 
             sleep(500);
             robot.moveServo(robot.rotateBox, 0.63, 100,500);
@@ -303,16 +303,16 @@ public class SuperBlueTurn extends LinearOpMode{
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
 
-            robot.left1.setTargetPosition(-150);
-            robot.left2.setTargetPosition(-150);
-            robot.right1.setTargetPosition(-150);
-            robot.right2.setTargetPosition(-150);
-            robot.left1.setPower(-0.2);
-            robot.left2.setPower(-0.2);
-            robot.right1.setPower(-0.2);
-            robot.right2.setPower(-0.2);
-            sleep(100);
-            while(robot.left1.isBusy()){}
+//            robot.left1.setTargetPosition(-150);
+//            robot.left2.setTargetPosition(-150);
+//            robot.right1.setTargetPosition(-150);
+//            robot.right2.setTargetPosition(-150);
+//            robot.left1.setPower(-0.2);
+//            robot.left2.setPower(-0.2);
+//            robot.right1.setPower(-0.2);
+//            robot.right2.setPower(-0.2);
+//            sleep(100);
+//            while(robot.left1.isBusy()){}
 
             sleep(500);
             robot.moveServo(robot.rotateBox, 0.63, 100,500);
@@ -396,16 +396,16 @@ public class SuperBlueTurn extends LinearOpMode{
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
 
-            robot.left1.setTargetPosition(-150);
-            robot.left2.setTargetPosition(-150);
-            robot.right1.setTargetPosition(-150);
-            robot.right2.setTargetPosition(-150);
-            robot.left1.setPower(-0.2);
-            robot.left2.setPower(-0.2);
-            robot.right1.setPower(-0.2);
-            robot.right2.setPower(-0.2);
-            sleep(100);
-            while(robot.left1.isBusy()){}
+//            robot.left1.setTargetPosition(-150);
+//            robot.left2.setTargetPosition(-150);
+//            robot.right1.setTargetPosition(-150);
+//            robot.right2.setTargetPosition(-150);
+//            robot.left1.setPower(-0.2);
+//            robot.left2.setPower(-0.2);
+//            robot.right1.setPower(-0.2);
+//            robot.right2.setPower(-0.2);
+//            sleep(100);
+//            while(robot.left1.isBusy()){}
 
             sleep(500);
             robot.moveServo(robot.rotateBox, 0.63, 100,500);

@@ -21,6 +21,7 @@ public class SuperTeleop extends LinearOpMode {
     public static int flipPosition = -70;
     public int relicClawMode = 0;
     public int relicTwistMode = 0;
+    public int fingerMode = 0;
     // declare motor speed variables
     double RF; double LF; double RR; double LR;
     // declare joystick position variables
@@ -102,17 +103,18 @@ public class SuperTeleop extends LinearOpMode {
 
                 // Intake Speed and Controls
                 if (gamepad1.a) {
-                    robot.intake.setPower(0.70);
+                    robot.intake.setPower(0.95);
                 }
                 if (gamepad1.b) {
-                    robot.intake.setPower(-.9);
+                    robot.intake.setPower(-0.9);
                 }
                 if (gamepad1.y) {
                     robot.intake.setPower(0.0);
                 }
                 if (gamepad1.right_bumper) {
-                    robot.rotateBox.setPosition(0.68);
-                } else if (gamepad1.left_bumper) {
+                    robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+                }
+                else if (gamepad1.left_bumper) {
                     robot.rotateBox.setPosition(0.34);
                     //robot.intake.setPower(0.0);
                 }
@@ -145,40 +147,48 @@ public class SuperTeleop extends LinearOpMode {
                     while(robot.glyphFlip.getCurrentPosition() > -35){
                         robot.glyphFlip.setPower(1);
                         telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
-                    }
-                    robot.glyphFlip.setPower(0);
+                    }   robot.glyphFlip.setPower(0);
                 }
-            //This controls the winch and allows us to raise and lower it with limit switches to stop if from injuring itself.
-             if (robot.upperLimit.getState() == false) {
+
+            //This controls the winch and allows us to raise and lower it with limit switches to stop if from breaking itself.
+             if (robot.upperLimit.getState() == false) { //Top Limit is pressed
                 if (gamepad1.left_trigger > 0.5) {
                         robot.winch.setPower(-0.5);
-                    robot.rotateBox.setPosition(0.21); //0
-            }else{
+                    robot.rotateBox.setPosition(0.21); //0.0
+                    robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+                }else{
                     robot.winch.setPower(0.0);
-                    robot.rotateBox.setPosition(0.21); //0
+                    robot.rotateBox.setPosition(0.21); //0.0
+                    robot.bucketFinger.setPosition(robot.FINGER_OPEN);
                 }
             }
-            else if(robot.bottomLimit.getState() == false){
+            else if(robot.bottomLimit.getState() == false){//Bottom Switch is pressed
                 robot.intake.setPower(0.0);
-                if (gamepad1.right_trigger > 0.5) {
+                if (gamepad1.right_trigger > 0.5){
                     robot.winch.setPower(0.5);
+//                    robot.bucketFinger.setPosition(robot.FINGER_OPEN);
                 }else {
                     robot.winch.setPower(0.0);
+//                    robot.bucketFinger.setPosition(robot.FINGER_OPEN);
                 }
             }
-            else{
+            else{ //In the middle
                 robot.intake.setPower(0.0);
                 if (gamepad1.right_trigger > 0.5) {
                     robot.winch.setPower(0.5);
-                    robot.rotateBox.setPosition(0.34);//Bucket at mid postion
+                    robot.rotateBox.setPosition(0.68);//Bucket at mid postion
+                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
                 } else if (gamepad1.left_trigger > 0.5) {
                     robot.winch.setPower(-0.5);
-                    robot.rotateBox.setPosition(0.34);//Bucket at mid postion
-                } else {
+                    robot.rotateBox.setPosition(0.68);//Bucket at mid postion
+                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+                }
+                else{
                     robot.winch.setPower(0);
+                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
                 }
             }
-            }
+        }
             if(endGameMode == 1){
                 if(gamepad1.start) {
                     endGameMode = 0;
@@ -207,12 +217,12 @@ public class SuperTeleop extends LinearOpMode {
                     }
                     //Slider Twisting Controls
                     if (gamepad1.right_bumper && relicTwistMode == 0) {
-                        robot.twist.setPosition(1); //Twists the claw up'
+                        robot.twist.setPosition(0.95); //Twists the claw down'
                         sleep(500);
                         relicTwistMode++;
                     } else if (gamepad1.right_bumper && relicTwistMode == 1) {
                         robot.pinch.setPosition(1);
-                        robot.twist.setPosition(0); // Twists the claw down
+                        robot.twist.setPosition(0.0); // Twists the claw up
                         sleep(500);
                         relicTwistMode--;
                     }
