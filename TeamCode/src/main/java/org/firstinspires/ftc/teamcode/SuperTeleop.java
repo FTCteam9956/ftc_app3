@@ -151,9 +151,9 @@ public class SuperTeleop extends LinearOpMode {
                 }
 
             //This controls the winch and allows us to raise and lower it with limit switches to stop if from breaking itself.
-             if (robot.upperLimit.getState() == false) { //Top Limit is pressed
+             if (robot.upperLimit.getState() == false) { //Bottom Limit is pressed
                 if (gamepad1.left_trigger > 0.5) {
-                        robot.winch.setPower(-0.5);
+                    robot.winch.setPower(-0.5);       //Raise winch for the time it is pressing the switch
                     robot.rotateBox.setPosition(0.21); //0.0
                     robot.bucketFinger.setPosition(robot.FINGER_OPEN);
                 }else{
@@ -162,9 +162,9 @@ public class SuperTeleop extends LinearOpMode {
                     robot.bucketFinger.setPosition(robot.FINGER_OPEN);
                 }
             }
-            else if(robot.bottomLimit.getState() == false){//Bottom Switch is pressed
-                robot.intake.setPower(0.0);
-                if (gamepad1.right_trigger > 0.5){
+            else if(robot.bottomLimit.getState() == false){//Top Switch is pressed
+                robot.intake.setPower(0.0); //stops intake so we don't get a block stuck in
+                if (gamepad1.right_trigger > 0.5){ //If the button is pressed we will lower the bucket
                     robot.winch.setPower(0.5);
 //                    robot.bucketFinger.setPosition(robot.FINGER_OPEN);
                 }else {
@@ -173,19 +173,19 @@ public class SuperTeleop extends LinearOpMode {
                 }
             }
             else{ //In the middle
-                robot.intake.setPower(0.0);
-                if (gamepad1.right_trigger > 0.5) {
-                    robot.winch.setPower(0.5);
-                    robot.rotateBox.setPosition(0.68);//Bucket at mid postion
-                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+                robot.intake.setPower(0.0); //Stop wheels to not get a block stuck
+                if(gamepad1.right_trigger > 0.5){
+                    robot.winch.setPower(0.5); //Lower winch
+                    robot.rotateBox.setPosition(0.68);//Bucket at up postion
                 } else if (gamepad1.left_trigger > 0.5) {
-                    robot.winch.setPower(-0.5);
-                    robot.rotateBox.setPosition(0.68);//Bucket at mid postion
-                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+                    robot.winch.setPower(-0.5); //Raise winch
+                    robot.rotateBox.setPosition(0.68);//Bucket at up postion
                 }
                 else{
                     robot.winch.setPower(0);
-                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+                    if(!gamepad1.right_bumper){
+                        robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+                    }
                 }
             }
         }
