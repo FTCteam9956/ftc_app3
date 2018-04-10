@@ -1,21 +1,29 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 @TeleOp(name = "Super Teleop", group = "Teleop")
-//@Disabled
+@Disabled
 public class SuperTeleop extends LinearOpMode {
     public RRHardwarePresets robot = new RRHardwarePresets();
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    public int endGameMode = 1;
+    public int endGameMode = 0;
     public float leftPower;
     public float rightPower;
     public static int flipPosition = -70;
@@ -26,12 +34,23 @@ public class SuperTeleop extends LinearOpMode {
     double RF; double LF; double RR; double LR;
     // declare joystick position variables
     double X1; double Y1; double X2; double Y2;
+    DcMotor FrontLeft, BackLeft, FrontRight, BackRight;
     // operational constants
     double joyScale = 1.0;
     double motorMax = 0.7; // Limit motor power to this value for Andymark RUN_USING_ENCODER mode
 
     @Override
     public void runOpMode(){
+        FrontLeft = hardwareMap.dcMotor.get("left1");
+        BackLeft = hardwareMap.dcMotor.get("left2");
+        FrontRight = hardwareMap.dcMotor.get("right1");
+        BackRight= hardwareMap.dcMotor.get("right2");
+        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.init(hardwareMap);
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.left2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -46,6 +65,15 @@ public class SuperTeleop extends LinearOpMode {
         robot.glyphFlip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.relicArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Status", "Initialized");
+        BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
+        parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters1.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters1.loggingEnabled = true;
+        parameters1.loggingTag = "IMU";
+
+        robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
+        robot.imu.initialize(parameters1);
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -62,44 +90,70 @@ public class SuperTeleop extends LinearOpMode {
                     sleep(20);
                 }
                 // Reset speed variables
-                LF = 0;
-                RF = 0;
-                LR = 0;
-                RR = 0;
+//                LF = 0;
+//                RF = 0;
+//                LR = 0;
+//                RR = 0;
+//
+//                // Get joystick values
+//                Y1 = gamepad1.left_stick_y * joyScale; // invert so up is positive
+//                X1 = gamepad1.left_stick_x * joyScale;
+//                // Y2 is not used at present
+//                X2 = -gamepad1.right_stick_x * joyScale;
+//
+//                // Forward/back movement
+//                LF += Y1;
+//                RF += Y1;
+//                LR += Y1;
+//                RR += Y1;
+//                // Side to side movement
+//                LF += X1;
+//                RF -= X1;
+//                LR += X1;
+//                RR -= X1;
+//                //Rotation Movement
+//                LF += X2;
+//                RF += X2;
+//                LR -= X2;
+//                RR -= X2;
+//
+//                // Clip motor power values to +-motorMax
+//                LF = Math.max(-motorMax, Math.min(LF, motorMax));
+//                RF = Math.max(-motorMax, Math.min(RF, motorMax));
+//                LR = Math.max(-motorMax, Math.min(LR, motorMax));
+//                RR = Math.max(-motorMax, Math.min(RR, motorMax));
+//
+//                // Send values to the motors
+//                robot.left1.setPower(LF);
+//                robot.right1.setPower(RF);
+//                robot.left2.setPower(LR);
+//                robot.right2.setPower(RR);
 
-                // Get joystick values
-                Y1 = gamepad1.left_stick_y * joyScale; // invert so up is positive
-                X1 = gamepad1.left_stick_x * joyScale;
-                // Y2 is not used at present
-                X2 = -gamepad1.right_stick_x * joyScale;
+//                double x=-gamepad1.left_stick_x;
+//                double turn=gamepad1.left_stick_y;
+//                double y=gamepad1.right_stick_x;
+//                left1.setPower(turn+y+x);
+//                right1.setPower(y-turn-x);
+//                left2.setPower(turn+y-x);
+//                right2.setPower(y-turn+x);
 
-                // Forward/back movement
-                LF += Y1;
-                RF += Y1;
-                LR += Y1;
-                RR += Y1;
-                // Side to side movement
-                LF += X1;
-                RF -= X1;
-                LR += X1;
-                RR -= X1;
-                //Rotation Movement
-                LF += X2;
-                RF += X2;
-                LR -= X2;
-                RR -= X2;
+                double x=gamepad1.left_stick_x;
+                double y=gamepad1.left_stick_y;
+                double turn=-gamepad1.right_stick_x;
+                double heading;
+                if (x==0 && y==0) heading=0;
+                else if (x>=0) heading=Math.PI-Math.atan(y/x);
+                else heading=-Math.atan(y/x);
+                double pow=Math.sqrt(Math.pow(x,6)+Math.pow(y,6));
+                Orientation angles=robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+                heading-=(angles.firstAngle+Math.PI/4.);
+                double pow1=Math.sqrt(2)*pow*Math.cos(heading);
+                double pow2=Math.sqrt(2)*pow*Math.sin(heading);
+                FrontLeft.setPower(turn+pow1);
+                BackLeft.setPower(turn+pow2);
+                FrontRight.setPower(pow1-turn);
+                BackRight.setPower(pow2-turn);
 
-                // Clip motor power values to +-motorMax
-                LF = Math.max(-motorMax, Math.min(LF, motorMax));
-                RF = Math.max(-motorMax, Math.min(RF, motorMax));
-                LR = Math.max(-motorMax, Math.min(LR, motorMax));
-                RR = Math.max(-motorMax, Math.min(RR, motorMax));
-
-                // Send values to the motors
-                robot.left1.setPower(LF);
-                robot.right1.setPower(RF);
-                robot.left2.setPower(LR);
-                robot.right2.setPower(RR);
 
                 // Intake Speed and Controls
                 if (gamepad1.a) {
@@ -194,13 +248,23 @@ public class SuperTeleop extends LinearOpMode {
                     endGameMode = 0;
                     sleep(20);
                 }
-                leftPower = (gamepad1.left_stick_y + gamepad1.left_stick_x);
-                rightPower = (gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-                robot.left1.setPower(leftPower / 2);
-                robot.left2.setPower(leftPower / 2);
-                robot.right1.setPower(rightPower / 2);
-                robot.right2.setPower(rightPower / 2);
+                double x=gamepad1.left_stick_x;
+                double y=gamepad1.left_stick_y;
+                double turn=-gamepad1.right_stick_x;
+                double heading;
+                if (x==0 && y==0) heading=0;
+                else if (x>=0) heading=Math.PI-Math.atan(y/x);
+                else heading=-Math.atan(y/x);
+                double pow=Math.sqrt(Math.pow(x,6)+Math.pow(y,6));
+                Orientation angles=robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+                heading-=(angles.firstAngle+Math.PI/4.);
+                double pow1=Math.sqrt(2)*pow*Math.cos(heading);
+                double pow2=Math.sqrt(2)*pow*Math.sin(heading);
+                FrontLeft.setPower(turn+pow1);
+                BackLeft.setPower(turn+pow2);
+                FrontRight.setPower(pow1-turn);
+                BackRight.setPower(pow2-turn);
 
                     //Controls our linear slide
                 robot.relicArm.setPower(-gamepad1.right_stick_y);
@@ -244,6 +308,7 @@ public class SuperTeleop extends LinearOpMode {
             telemetry.addData("endGameMode", endGameMode);
             telemetry.addData("pincher", robot.pinch.getPosition());
             telemetry.addData("Twister", robot.twist.getPosition());
+
 //            telemetry.addData("lowerArm", robot.lowerArm.getPosition());
 //            telemetry.addData("rotateArm", robot.rotateArm.getPosition());
 //            telemetry.addData("upperLimit",robot.upperLimit.getState());

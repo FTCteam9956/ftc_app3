@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -47,6 +48,9 @@ public class RRHardwarePresets {
 
     //Sensors
     public ColorSensor jewelArm;
+    public ColorSensor bucketFront;
+    public ColorSensor bucketBack;
+    public DistanceSensor wallSensor;
     public BNO055IMU imu;
 
     Orientation angles;
@@ -62,7 +66,7 @@ public class RRHardwarePresets {
     public static final double ROTATE_LEFT = 0.0;
     public static final double ROTATE_MID = 0.3;
     public static final double FINGER_OPEN = 1.0;
-    public static final double FINGER_CLOSED = 0.0;
+    public static final double FINGER_CLOSED = 0.5;
 
     //Constructor
     public RRHardwarePresets() {
@@ -91,14 +95,17 @@ public class RRHardwarePresets {
         bucketFinger = HwMap.servo.get("bucketFinger");
 
         jewelArm = HwMap.colorSensor.get("jewelArm");
+        bucketFront = HwMap.colorSensor.get("bucketFront");
+        bucketBack = HwMap.colorSensor.get("bucketBack");
         imu = HwMap.get(BNO055IMU.class, "imu");
+        wallSensor = HwMap.get(DistanceSensor.class, "wallSensor");
 
 
         //DC Motor directions.
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
         left2.setDirection(DcMotorSimple.Direction.FORWARD);
-        right1.setDirection(DcMotorSimple.Direction.REVERSE);
-        right2.setDirection(DcMotorSimple.Direction.REVERSE);
+        right1.setDirection(DcMotorSimple.Direction.FORWARD);
+        right2.setDirection(DcMotorSimple.Direction.FORWARD);
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         winch.setDirection(DcMotorSimple.Direction.FORWARD);
 //        relicArm.setDirection(DcMotorSimple.Direction.FORWARD);

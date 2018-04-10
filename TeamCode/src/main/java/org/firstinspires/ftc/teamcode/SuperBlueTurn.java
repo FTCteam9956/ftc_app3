@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
-@Autonomous(name = "SuperBlueTurn", group = "Autonomous")
+@Autonomous(name = "OneBlockBlueTurn", group = "Autonomous")
 //@Disabled
 public class SuperBlueTurn extends LinearOpMode{
     RRHardwarePresets robot = new RRHardwarePresets();

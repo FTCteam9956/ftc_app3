@@ -21,7 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name = "SuperRedStraight", group = "Autonomous")
+@Autonomous(name = "OneBlockRedStraight", group = "Autonomous")
 //@Disabled
 public class SuperRedStraightTest extends LinearOpMode {
     RRHardwarePresets robot = new RRHardwarePresets();
