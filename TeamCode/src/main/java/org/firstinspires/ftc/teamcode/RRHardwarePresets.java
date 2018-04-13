@@ -104,8 +104,8 @@ public class RRHardwarePresets {
         //DC Motor directions.
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
         left2.setDirection(DcMotorSimple.Direction.FORWARD);
-        right1.setDirection(DcMotorSimple.Direction.FORWARD);
-        right2.setDirection(DcMotorSimple.Direction.FORWARD);
+        right1.setDirection(DcMotorSimple.Direction.REVERSE);
+        right2.setDirection(DcMotorSimple.Direction.REVERSE);
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         winch.setDirection(DcMotorSimple.Direction.FORWARD);
 //        relicArm.setDirection(DcMotorSimple.Direction.FORWARD);
