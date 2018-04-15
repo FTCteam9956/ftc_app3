@@ -53,7 +53,7 @@ public class RRHardwarePresets {
     public DistanceSensor wallSensor;
     public BNO055IMU imu;
 
-    Orientation angles;
+    public Orientation angles;
     Acceleration gravity;
 
     public static final double RELIC_CLAW_OPENED = 0;
