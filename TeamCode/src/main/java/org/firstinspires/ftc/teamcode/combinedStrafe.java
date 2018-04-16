@@ -68,7 +68,7 @@ public class combinedStrafe extends LinearOpMode {
                 int targetAngle = 90;
                 while (opModeIsActive()) {
                     double strafeCorrection = (startingRange - robot.wallSensor.getDistance(DistanceUnit.CM)) / startingRange;
-                    double turnCorrection = (targetAngle - (angles.firstAngle + 90) / targetAngle);
+                    double turnCorrection = (targetAngle - (angles.firstAngle) / targetAngle);
                     double Ca = turnCorrection * 2.5;
                     double Cd = strafeCorrection * 0.4;
                     double powOffsetRight = ((Cd + Ca) / 2);
