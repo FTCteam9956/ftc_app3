@@ -41,6 +41,7 @@ public class RRHardwarePresets {
     public Servo twist; //Relic Arm
     public Servo pinch; //Relic Arm
     public Servo bucketFinger; //Fingers on the Bucket
+    public Servo discHold;
 
     //Limits
     public DigitalChannel upperLimit;
@@ -93,6 +94,7 @@ public class RRHardwarePresets {
         twist = HwMap.servo.get("twist");
         pinch = HwMap.servo.get("pinch");
         bucketFinger = HwMap.servo.get("bucketFinger");
+        discHold = HwMap.servo.get("discHold");
 
         jewelArm = HwMap.colorSensor.get("jewelArm");
         bucketFront = HwMap.colorSensor.get("bucketFront");

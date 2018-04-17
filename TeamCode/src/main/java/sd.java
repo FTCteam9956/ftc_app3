@@ -1,3 +1,4 @@
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -24,6 +25,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.Locale;
 import java.util.Locale;
 @Autonomous(name = "SD", group = "Autonomous")
+@Disabled
 public class sd extends LinearOpMode {
     public RRHardwarePresets robot = new RRHardwarePresets();
 

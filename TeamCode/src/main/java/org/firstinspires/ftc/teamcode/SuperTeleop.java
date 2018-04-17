@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name = "Super Teleop", group = "Teleop")
-//@Disabled
+@Disabled
 public class SuperTeleop extends LinearOpMode {
     public RRHardwarePresets robot = new RRHardwarePresets();
 
