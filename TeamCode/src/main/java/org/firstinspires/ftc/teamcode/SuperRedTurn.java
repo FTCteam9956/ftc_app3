@@ -88,7 +88,7 @@ public class SuperRedTurn extends LinearOpMode{
 
         waitForStart();
         robot.initServoPositions();
-        robot.rotateBox.setPosition(0.3);
+        robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
         sleep(500);
         if (targetPosition == 0) {
             targetPosition = 3;
@@ -224,7 +224,7 @@ public class SuperRedTurn extends LinearOpMode{
             while(robot.left1.isBusy()){}
 
             sleep(500);
-            robot.moveServo(robot.rotateBox, 0.63, 100,500);
+            robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
             sleep(100);
 
             robot.setRunMode("STOP_AND_RESET_ENCODER");
@@ -317,7 +317,7 @@ public class SuperRedTurn extends LinearOpMode{
             while(robot.left1.isBusy()){}
 
             sleep(500);
-            robot.moveServo(robot.rotateBox, 0.63, 100,500);
+            robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
             sleep(100);
 
             robot.setRunMode("STOP_AND_RESET_ENCODER");
@@ -410,7 +410,7 @@ public class SuperRedTurn extends LinearOpMode{
             while(robot.left1.isBusy()){}
 
             sleep(500);
-            robot.moveServo(robot.rotateBox, 0.63, 100,500);
+            robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
             sleep(100);
 
             robot.setRunMode("STOP_AND_RESET_ENCODER");
@@ -455,7 +455,7 @@ public class SuperRedTurn extends LinearOpMode{
             telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
         }
         robot.glyphFlip.setPower(0);
-        robot.rotateBox.setPosition(0.34);
+        robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
         sleep(500);
     }
     void composeTelemetry() {

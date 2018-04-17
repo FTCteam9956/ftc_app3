@@ -68,6 +68,9 @@ public class RRHardwarePresets {
     public static final double ROTATE_MID = 0.3;
     public static final double FINGER_OPEN = 1.0;
     public static final double FINGER_CLOSED = 0.5;
+    public static final double ROTATEBOX_DOWN = 0.0;
+    public static final double ROTATEBOX_UP = 0.55;
+    public static final double ROTATEBOX_MIDDLE = 0.13;
 
     //Constructor
     public RRHardwarePresets() {
