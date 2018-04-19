@@ -49,8 +49,8 @@ public class RRHardwarePresets {
 
     //Sensors
     public ColorSensor jewelArm;
-    public ColorSensor bucketFront;
-    public ColorSensor bucketBack;
+    public DistanceSensor bucketFront;
+    public DistanceSensor bucketBack;
     public DistanceSensor wallSensor;
     public BNO055IMU imu;
 
@@ -68,9 +68,9 @@ public class RRHardwarePresets {
     public static final double ROTATE_MID = 0.3;
     public static final double FINGER_OPEN = 1.0;
     public static final double FINGER_CLOSED = 0.5;
-    public static final double ROTATEBOX_DOWN = 0.0;
-    public static final double ROTATEBOX_UP = 0.55;
-    public static final double ROTATEBOX_MIDDLE = 0.13;
+    public static final double ROTATEBOX_DOWN = 0.28;
+    public static final double ROTATEBOX_UP = 0.66;
+    public static final double ROTATEBOX_MIDDLE = 0.36;
 
     //Constructor
     public RRHardwarePresets() {
@@ -100,8 +100,8 @@ public class RRHardwarePresets {
         discHold = HwMap.servo.get("discHold");
 
         jewelArm = HwMap.colorSensor.get("jewelArm");
-        bucketFront = HwMap.colorSensor.get("bucketFront");
-        bucketBack = HwMap.colorSensor.get("bucketBack");
+        bucketFront = HwMap.get(DistanceSensor.class, "bucketFront");
+        bucketBack = HwMap.get(DistanceSensor.class,"bucketBack");
         imu = HwMap.get(BNO055IMU.class, "imu");
         wallSensor = HwMap.get(DistanceSensor.class, "wallSensor");
 

@@ -2,30 +2,34 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
-@Autonomous(name = "OneBlockBlueTurn", group = "Autonomous")
-//@Disabled
-public class SuperBlueTurn extends LinearOpMode{
+
+/**
+ * Created by beth on 4/18/2018.
+ */
+
+public class MultiBlockTest extends LinearOpMode {
     RRHardwarePresets robot = new RRHardwarePresets();
     VuforiaLocalizer vuforia;
 
     public static final double POWER = 1.15;
     int targetPosition = 0;
+    int blockCount = 0;
 
     public void runOpMode() {
         robot.init(hardwareMap);//Robot moves during init().
@@ -86,10 +90,10 @@ public class SuperBlueTurn extends LinearOpMode{
 
         waitForStart();
         robot.initServoPositions();
-        robot.glyphFlip.setPower(0.4);
         robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+        robot.glyphFlip.setPower(0.4);
         sleep(500);
-        if (targetPosition == 0) {
+        if (targetPosition == 4) {
             targetPosition = 3;
         }
         robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
@@ -100,13 +104,13 @@ public class SuperBlueTurn extends LinearOpMode{
         while (loopBreak == 0) {
             sleep(300);
             if (robot.jewelArm.red() > robot.jewelArm.blue()) {
-                knockOffBall(1); //go left
+                knockOffBall(0); //go left
                 telemetry.addData("Status", "Confirmed Red Ball!");
                 sleep(500);
                 loopBreak = 1;
             } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
                 if (robot.jewelArm.blue() > 27) {
-                    knockOffBall(0); //go right
+                    knockOffBall(1); //go right
                     telemetry.addData("Status", "Confirmed Blue Ball!");
                     sleep(500);
                     loopBreak = 1;
@@ -118,13 +122,13 @@ public class SuperBlueTurn extends LinearOpMode{
                     robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
                     sleep(300);
                     if (robot.jewelArm.red() > robot.jewelArm.blue()) {
-                        knockOffBall(1); //Go left
+                        knockOffBall(0); //Go left
                         telemetry.addData("Status", "Confirmed Red Ball!");
                         sleep(500);
                         loopBreak = 1;
                     } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
                         if (robot.jewelArm.blue() > 27) {
-                            knockOffBall(0); //go right
+                            knockOffBall(1); //go right
                             telemetry.addData("Status", "Confirmed Blue Ball!");
                             sleep(500);
                             loopBreak = 1;
@@ -141,42 +145,140 @@ public class SuperBlueTurn extends LinearOpMode{
         robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_UP, 200, 300);
         sleep(500);
 
-        robot.left1.setTargetPosition(-850);
-        robot.left2.setTargetPosition(-850);
-        robot.right1.setTargetPosition(-850);
-        robot.right2.setTargetPosition(-850);
-        robot.left1.setPower(-0.25);
-        robot.left2.setPower(-0.25);
-        robot.right1.setPower(-0.25);
-        robot.right2.setPower(-0.25);
-        sleep(100);
-        while(robot.left1.isBusy()){
-            robot.glyphFlip.setTargetPosition(0);
-            robot.glyphFlip.setPower(0.3);
+//        //1 - LEFT, 2 - RIGHT, 3 - CENTER, 0 - NOT VISIBLE, 4 - TIMEOUT
+        if (targetPosition == 1) {
+            robot.left1.setTargetPosition(1100);
+            robot.left2.setTargetPosition(1100);
+            robot.right1.setTargetPosition(1100);
+            robot.right2.setTargetPosition(1100);
+            robot.left1.setPower(0.25);
+            robot.left2.setPower(0.25);
+            robot.right1.setPower(0.25);
+            robot.right2.setPower(0.25);
+            sleep(100);
+            while (robot.right1.isBusy()) {
+                telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
+                telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
+                telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
+                telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
+                telemetry.update();
+                if (robot.angles.firstAngle < 0.000001) {
+                    robot.left1.setPower(0.25);
+                    robot.left2.setPower(0.25);
+                    robot.right1.setPower(0.25 * POWER);
+                    robot.right2.setPower(0.25 * POWER);
+                    telemetry.update();
+                } else if (robot.angles.firstAngle > 0.000001) {
+                    robot.left1.setPower(0.25 * POWER);
+                    robot.left2.setPower(0.25 * POWER);
+                    robot.right1.setPower(0.25);
+                    robot.right2.setPower(0.25);
+                    telemetry.update();
+                } else {
+                    robot.left1.setPower(0.25);
+                    robot.left2.setPower(0.25);
+                    robot.right1.setPower(0.25);
+                    robot.right2.setPower(0.25);
+                    telemetry.update();
+                }
+                robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+            }
+            robot.left1.setPower(0);
+            robot.left2.setPower(0);
+            robot.right1.setPower(0);
+            robot.right2.setPower(0);
+            sleep(500);
+
+            robot.setRunMode("RUN_USING_ENCODER");
+            sleep(50);
+            while (robot.angles.firstAngle > 120 || robot.angles.firstAngle < 107) {
+                telemetry.update();
+                if (robot.angles.firstAngle > 120) {
+                    robot.left1.setPower(0.13);
+                    robot.left2.setPower(0.13);
+                    robot.right1.setPower(-0.13);
+                    robot.right2.setPower(-0.13);
+                } else if (robot.angles.firstAngle < 107) {
+                    robot.left1.setPower(-0.13);
+                    robot.left2.setPower(-0.13);
+                    robot.right1.setPower(0.13);
+                    robot.right2.setPower(0.13);
+                }
+            }
+            robot.left1.setPower(0);
+            robot.left2.setPower(0);
+            robot.right1.setPower(0);
+            robot.right2.setPower(0);
+
+            sleep(500);
+            robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
+            sleep(1000);
+            robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+            sleep(500);
+
+            robot.setRunMode("STOP_AND_RESET_ENCODER");
+            sleep(50);
+            robot.setRunMode("RUN_TO_POSITION");
+            sleep(50);
+            robot.left1.setTargetPosition(-200);
+            robot.left2.setTargetPosition(-200);
+            robot.right1.setTargetPosition(-200);
+            robot.right2.setTargetPosition(-200);
+            robot.left1.setPower(-0.25);
+            robot.left2.setPower(-0.25);
+            robot.right1.setPower(-0.25);
+            robot.right2.setPower(-0.25);
+
+            sleep(500);
+            robot.setRunMode("STOP_AND_RESET_ENCODER");
+            sleep(50);
+            robot.setRunMode("RUN_TO_POSITION");
+            sleep(50);
+            robot.left1.setTargetPosition(150);
+            robot.left2.setTargetPosition(150);
+            robot.right1.setTargetPosition(150);
+            robot.right2.setTargetPosition(150);
+            robot.left1.setPower(0.1);
+            robot.left2.setPower(0.1);
+            robot.right1.setPower(0.1);
+            robot.right2.setPower(0.1);
+
         }
-        sleep(300);
-
-        robot.setRunMode("STOP_AND_RESET_ENCODER");
-        sleep(50);
-        robot.setRunMode("RUN_TO_POSITION");
-        sleep(50);
-
-        if(targetPosition == 1){
-            robot.left1.setTargetPosition(-650);
-            robot.left2.setTargetPosition(650);
-            robot.right1.setTargetPosition(-650); //strafe left
-            robot.right2.setTargetPosition(650);
-            robot.left1.setPower(-0.2);
-            robot.left2.setPower(0.2);
-            robot.right1.setPower(-0.2);
-            robot.right2.setPower(0.2);
+        if (targetPosition == 2) {
+            robot.left1.setTargetPosition(1125);
+            robot.left2.setTargetPosition(1125);
+            robot.right1.setTargetPosition(1125);
+            robot.right2.setTargetPosition(1125);
+            robot.left1.setPower(0.25);
+            robot.left2.setPower(0.25);
+            robot.right1.setPower(0.25);
+            robot.right2.setPower(0.25);
             sleep(100);
-            while (robot.left1.isBusy()){
+            while (robot.right1.isBusy()) {
                 telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
                 telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
                 telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
                 telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
                 telemetry.update();
+                if (robot.angles.firstAngle < 0.000001) {
+                    robot.left1.setPower(0.25);
+                    robot.left2.setPower(0.25);
+                    robot.right1.setPower(0.25 * POWER);
+                    robot.right2.setPower(0.25 * POWER);
+                    telemetry.update();
+                } else if (robot.angles.firstAngle > 0.000001) {
+                    robot.left1.setPower(0.25 * POWER);
+                    robot.left2.setPower(0.25 * POWER);
+                    robot.right1.setPower(0.25);
+                    robot.right2.setPower(0.25);
+                    telemetry.update();
+                } else {
+                    robot.left1.setPower(0.25);
+                    robot.left2.setPower(0.25);
+                    robot.right1.setPower(0.25);
+                    robot.right2.setPower(0.25);
+                    telemetry.update();
+                }
                 robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
             }
             robot.left1.setPower(0);
@@ -187,14 +289,14 @@ public class SuperBlueTurn extends LinearOpMode{
 
             robot.setRunMode("RUN_USING_ENCODER");
             sleep(50);
-            while (robot.angles.firstAngle > 38 || robot.angles.firstAngle < 25) { //30-17
+            while (robot.angles.firstAngle > 68 || robot.angles.firstAngle < 55) {
                 telemetry.update();
-                if (robot.angles.firstAngle > 38) {
+                if (robot.angles.firstAngle > 68) {
                     robot.left1.setPower(0.13);
                     robot.left2.setPower(0.13);
                     robot.right1.setPower(-0.13);
                     robot.right2.setPower(-0.13);
-                } else if (robot.angles.firstAngle < 25) {
+                } else if (robot.angles.firstAngle < 55) {
                     robot.left1.setPower(-0.13);
                     robot.left2.setPower(-0.13);
                     robot.right1.setPower(0.13);
@@ -205,12 +307,6 @@ public class SuperBlueTurn extends LinearOpMode{
             robot.left2.setPower(0);
             robot.right1.setPower(0);
             robot.right2.setPower(0);
-            sleep(500);
-
-            robot.setRunMode("STOP_AND_RESET_ENCODER");
-            sleep(50);
-            robot.setRunMode("RUN_TO_POSITION");
-            sleep(50);
 
             sleep(500);
             robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
@@ -222,10 +318,10 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(50);
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
-            robot.left1.setTargetPosition(-300);
-            robot.left2.setTargetPosition(-300);
-            robot.right1.setTargetPosition(-300);
-            robot.right2.setTargetPosition(-300);
+            robot.left1.setTargetPosition(-200);
+            robot.left2.setTargetPosition(-200);
+            robot.right1.setTargetPosition(-200);
+            robot.right2.setTargetPosition(-200);
             robot.left1.setPower(-0.25);
             robot.left2.setPower(-0.25);
             robot.right1.setPower(-0.25);
@@ -240,73 +336,73 @@ public class SuperBlueTurn extends LinearOpMode{
             robot.left2.setTargetPosition(150);
             robot.right1.setTargetPosition(150);
             robot.right2.setTargetPosition(150);
-            robot.left1.setPower(0.2);
-            robot.left2.setPower(0.2);
-            robot.right1.setPower(0.2);
-            robot.right2.setPower(0.2);
-            sleep(1000);
+            robot.left1.setPower(0.1);
+            robot.left2.setPower(0.1);
+            robot.right1.setPower(0.1);
+            robot.right2.setPower(0.1);
 
-        }if (targetPosition == 2) {
-            robot.left1.setTargetPosition(-1300);
-            robot.left2.setTargetPosition(1300);
-            robot.right1.setTargetPosition(-1300); //strafe left
-            robot.right2.setTargetPosition(1300);
-            robot.left1.setPower(-0.2);
-            robot.left2.setPower(0.2);
-            robot.right1.setPower(-0.2);
-            robot.right2.setPower(0.2);
+        } else if (targetPosition == 3) {
+            robot.left1.setTargetPosition(980);
+            robot.left2.setTargetPosition(980);
+            robot.right1.setTargetPosition(980);
+            robot.right2.setTargetPosition(980);
+            robot.left1.setPower(0.25);
+            robot.left2.setPower(0.25);
+            robot.right1.setPower(0.25);
+            robot.right2.setPower(0.25);
             sleep(100);
-            while (robot.left1.isBusy()){
+            while (robot.right1.isBusy()) { //Telemetry of out positions
                 telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
                 telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
                 telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
                 telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
                 telemetry.update();
+                if (robot.angles.firstAngle < 0.000001) { //Making sure we drive straight with gyro
+                    robot.left1.setPower(0.25);
+                    robot.left2.setPower(0.25);
+                    robot.right1.setPower(0.25 * POWER);
+                    robot.right2.setPower(0.25 * POWER);
+                    telemetry.update();
+                } else if (robot.angles.firstAngle > 0.000001) {
+                    robot.left1.setPower(0.25 * POWER);
+                    robot.left2.setPower(0.25 * POWER);
+                    robot.right1.setPower(0.25);
+                    robot.right2.setPower(0.25);
+                    telemetry.update();
+                } else {
+                    robot.left1.setPower(0.25);
+                    robot.left2.setPower(0.25);
+                    robot.right1.setPower(0.25);
+                    robot.right2.setPower(0.25);
+                    telemetry.update();
+                }
                 robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
             }
-            robot.left1.setPower(0);
+            robot.left1.setPower(0); //Stop motor movement
             robot.left2.setPower(0);
             robot.right1.setPower(0);
             robot.right2.setPower(0);
-            sleep(500);
 
-            robot.setRunMode("RUN_USING_ENCODER");
+            robot.setRunMode("RUN_USING_ENCODER"); //Change the mode to run with encoders
             sleep(50);
-            while (robot.angles.firstAngle > 30 || robot.angles.firstAngle < 17) {
+            while (robot.angles.firstAngle > 115 || robot.angles.firstAngle < 102) { //Turning
                 telemetry.update();
-                if (robot.angles.firstAngle > 30) {
+                if (robot.angles.firstAngle > 115) {
                     robot.left1.setPower(0.13);
                     robot.left2.setPower(0.13);
                     robot.right1.setPower(-0.13);
                     robot.right2.setPower(-0.13);
-                } else if (robot.angles.firstAngle < 17) {
+                } else if (robot.angles.firstAngle < 102) {
                     robot.left1.setPower(-0.13);
                     robot.left2.setPower(-0.13);
                     robot.right1.setPower(0.13);
                     robot.right2.setPower(0.13);
                 }
             }
-            robot.left1.setPower(0);
+            robot.left1.setPower(0); //Stop motors
             robot.left2.setPower(0);
             robot.right1.setPower(0);
             robot.right2.setPower(0);
-            sleep(500);
-
-            robot.setRunMode("STOP_AND_RESET_ENCODER");
-            sleep(50);
-            robot.setRunMode("RUN_TO_POSITION");
-            sleep(50);
-
-//            robot.left1.setTargetPosition(-150);
-//            robot.left2.setTargetPosition(-150);
-//            robot.right1.setTargetPosition(-150);
-//            robot.right2.setTargetPosition(-150);
-//            robot.left1.setPower(-0.2);
-//            robot.left2.setPower(-0.2);
-//            robot.right1.setPower(-0.2);
-//            robot.right2.setPower(-0.2);
-//            sleep(100);
-//            while(robot.left1.isBusy()){}
 
             sleep(500);
             robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
@@ -318,10 +414,10 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(50);
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
-            robot.left1.setTargetPosition(-300);
-            robot.left2.setTargetPosition(-300);
-            robot.right1.setTargetPosition(-300);
-            robot.right2.setTargetPosition(-300);
+            robot.left1.setTargetPosition(-200); //Drive forward to put block in the stone
+            robot.left2.setTargetPosition(-200);
+            robot.right1.setTargetPosition(-200);
+            robot.right2.setTargetPosition(-200);
             robot.left1.setPower(-0.25);
             robot.left2.setPower(-0.25);
             robot.right1.setPower(-0.25);
@@ -332,100 +428,56 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(50);
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
-            robot.left1.setTargetPosition(150);
-            robot.left2.setTargetPosition(150);
-            robot.right1.setTargetPosition(150);
-            robot.right2.setTargetPosition(150);
-            robot.left1.setPower(0.2);
-            robot.left2.setPower(0.2);
-            robot.right1.setPower(0.2);
-            robot.right2.setPower(0.2);
-            sleep(1000);
+            robot.left1.setTargetPosition(100);
+            robot.left2.setTargetPosition(100); //Back off to make sure we aren't touching the block
+            robot.right1.setTargetPosition(100);
+            robot.right2.setTargetPosition(100);
+            robot.left1.setPower(0.1);
+            robot.left2.setPower(0.1);
+            robot.right1.setPower(0.1);
+            robot.right2.setPower(0.1);
+            sleep(500);
 
-        }if (targetPosition == 3) {
+            robot.setRunMode("RUN_USING_ENCODER");
+            sleep(50);
+            while (robot.angles.firstAngle > 92 || robot.angles.firstAngle < 89.5) {
+                //THIS IS A LEFT TURN TO 90 DEGREES
+                robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+                robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+                robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+                robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+                telemetry.addData("Heading", robot.angles.firstAngle);
+                telemetry.update();
+            }
+            robot.left1.setPower(0);
+            robot.left2.setPower(0);
+            robot.right1.setPower(0);
+            robot.right2.setPower(0);
+            sleep(2000);
+
             robot.left1.setTargetPosition(-1000);
-            robot.left2.setTargetPosition(1000);
-            robot.right1.setTargetPosition(-1000); //strafe left
-            robot.right2.setTargetPosition(1000);
-            robot.left1.setPower(-0.2);
-            robot.left2.setPower(0.2);
-            robot.right1.setPower(-0.2);
-            robot.right2.setPower(0.2);
-            sleep(100);
-            while (robot.left1.isBusy()){
-                telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
-                telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
-                telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
-                telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
-                telemetry.update();
-                robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+            robot.left2.setTargetPosition(-1000);
+            robot.right1.setTargetPosition(-1000);
+            robot.right2.setTargetPosition(-1000);
+            robot.left1.setPower(-0.3);
+            robot.left2.setPower(-0.3);
+            robot.right1.setPower(-0.3);
+            robot.right2.setPower(-0.3);
+            robot.intake.setPower(0.95);
+            while(robot.left1.isBusy()){
+                telemetry.addData("Status: ", "Getting Extra Blocks");
             }
-            robot.left1.setPower(0);
-            robot.left2.setPower(0);
-            robot.right1.setPower(0);
-            robot.right2.setPower(0);
-            sleep(500);
-
-            robot.setRunMode("RUN_USING_ENCODER");
-            sleep(50);
-            while (robot.angles.firstAngle > 30 || robot.angles.firstAngle < 17) {
-                telemetry.update();
-                if (robot.angles.firstAngle > 30) {
-                    robot.left1.setPower(0.13);
-                    robot.left2.setPower(0.13);
-                    robot.right1.setPower(-0.13);
-                    robot.right2.setPower(-0.13);
-                } else if (robot.angles.firstAngle < 17) {
-                    robot.left1.setPower(-0.13);
-                    robot.left2.setPower(-0.13);
-                    robot.right1.setPower(0.13);
-                    robot.right2.setPower(0.13);
+            //Hunting for blocks
+            while(blockCount < 2 && System.nanoTime() < 25000000 && opModeIsActive()){
+                while (robot.angles.firstAngle > 100 || robot.angles.firstAngle < 98) {
+                    //THIS IS A LEFT TURN TO 90 DEGREES
+                    robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+                    robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+                    robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+                    robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+//                    if(robot.bucketFront.getDistance(DistanceUnit.CM))
                 }
             }
-            robot.left1.setPower(0);
-            robot.left2.setPower(0);
-            robot.right1.setPower(0);
-            robot.right2.setPower(0);
-            sleep(500);
-
-            robot.setRunMode("STOP_AND_RESET_ENCODER");
-            sleep(50);
-            robot.setRunMode("RUN_TO_POSITION");
-            sleep(50);
-
-            sleep(500);
-            robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
-            sleep(1000);
-            robot.bucketFinger.setPosition(robot.FINGER_OPEN);
-            sleep(500);
-
-            robot.setRunMode("STOP_AND_RESET_ENCODER");
-            sleep(50);
-            robot.setRunMode("RUN_TO_POSITION");
-            sleep(50);
-            robot.left1.setTargetPosition(-300);
-            robot.left2.setTargetPosition(-300);
-            robot.right1.setTargetPosition(-300);
-            robot.right2.setTargetPosition(-300);
-            robot.left1.setPower(-0.25);
-            robot.left2.setPower(-0.25);
-            robot.right1.setPower(-0.25);
-            robot.right2.setPower(-0.25);
-
-            sleep(500);
-            robot.setRunMode("STOP_AND_RESET_ENCODER");
-            sleep(50);
-            robot.setRunMode("RUN_TO_POSITION");
-            sleep(50);
-            robot.left1.setTargetPosition(150);
-            robot.left2.setTargetPosition(150);
-            robot.right1.setTargetPosition(150);
-            robot.right2.setTargetPosition(150);
-            robot.left1.setPower(0.2);
-            robot.left2.setPower(0.2);
-            robot.right1.setPower(0.2);
-            robot.right2.setPower(0.2);
-            sleep(1000);
         }
         robot.glyphFlip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleep(50);
@@ -443,6 +495,43 @@ public class SuperBlueTurn extends LinearOpMode{
         robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
         sleep(500);
     }
+
+    public int lookForVuMark(VuforiaTrackable rTemplate) {
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(rTemplate);
+        int returnValue = 0;
+        if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+            if (vuMark == RelicRecoveryVuMark.LEFT) { // Test to see if Image is the "LEFT" image and display value.
+                telemetry.addData("VuMark is", "Left");
+                returnValue = 1;
+            } else if (vuMark == RelicRecoveryVuMark.RIGHT) { // Test to see if Image is the "RIGHT" image and display values.
+                telemetry.addData("VuMark is", "Right");
+                returnValue = 2;
+            } else if (vuMark == RelicRecoveryVuMark.CENTER) { // Test to see if Image is the "CENTER" image and display values.
+                telemetry.addData("VuMark is", "Center");
+                returnValue = 3;
+            }
+        } else {
+            telemetry.addData("VuMark", "not visible");
+            returnValue = 4;
+        }
+        telemetry.update();
+        return (returnValue);
+    }
+
+    public void knockOffBall(int selection) {
+
+        if (selection == 0) {
+            robot.rotateArm.setPosition(robot.ROTATE_LEFT);
+        }
+        if (selection == 1) {
+            robot.rotateArm.setPosition(robot.ROTATE_RIGHT);
+        }
+        sleep(500);
+        robot.lowerArm.setPosition(robot.JEWEL_ARM_UP);
+        sleep(500);
+        robot.rotateArm.setPosition(robot.ROTATE_MID);
+    }
+
     void composeTelemetry() {
 
         telemetry.addAction(new Runnable() {
@@ -469,7 +558,7 @@ public class SuperBlueTurn extends LinearOpMode{
                 .addData("heading", new Func<String>() {
                     @Override
                     public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle); // removed negative sign
                     }
                 })
                 .addData("roll", new Func<String>() {
@@ -503,107 +592,26 @@ public class SuperBlueTurn extends LinearOpMode{
                 });
     }
 
-    public int lookForVuMark(VuforiaTrackable rTemplate){
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(rTemplate);
-        int returnValue = 0;
-        if(vuMark != RelicRecoveryVuMark.UNKNOWN){
-            if(vuMark == RelicRecoveryVuMark.LEFT){ // Test to see if Image is the "LEFT" image and display value.
-                telemetry.addData("VuMark is", "Left");
-                returnValue = 1;
-            }else if(vuMark == RelicRecoveryVuMark.RIGHT){ // Test to see if Image is the "RIGHT" image and display values.
-                telemetry.addData("VuMark is", "Right");
-                returnValue = 2;
-            }else if(vuMark == RelicRecoveryVuMark.CENTER){ // Test to see if Image is the "CENTER" image and display values.
-                telemetry.addData("VuMark is", "Center");
-                returnValue = 3;
-            }
-        }
-        telemetry.update();
-        return(returnValue);
+    String formatAngle(AngleUnit angleUnit, double angle) {
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
-    public void turnToAngle(String turnDirection, double power, int targetAngle){
-        if(turnDirection == "CCW") {
-            if(robot.angles.firstAngle < (targetAngle - 5)){
-                robot.turn("CCW", power);
-            }
-            else if(robot.angles.firstAngle > (targetAngle + 5)){
-                robot.turn("CW", power);
-            }
-            else{//(targetAngle - 5) < robot.angles.firstAngle < (targetAngle + 5)
-                robot.setMotorPower(0.0);
-            }
-        }
-        if(turnDirection == "CW"){
-            if(robot.angles.firstAngle < (targetAngle - 5)){
-                robot.turn("CW", power);
-            }
-            else if(robot.angles.firstAngle > (targetAngle + 5)){
-                robot.turn("CCW", power);
-            }
-            else{//(targetAngle - 5) < robot.angles.firstAngle < (targetAngle + 5)
-                robot.setMotorPower(0.0);
-            }
-        }
+    String formatDegrees(double degrees) {
+        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
-    public void correctDriving(double power){
-        if(robot.angles.firstAngle < 0.001){
-            robot.left1.setPower(power);
-            robot.left2.setPower(power);
-            robot.right1.setPower(power * POWER);
-            robot.right2.setPower(power * POWER);
-        }
-        else if(robot.angles.firstAngle > -0.001){
-            robot.left1.setPower(power * POWER);
-            robot.left2.setPower(power * POWER);
-            robot.right1.setPower(power);
-            robot.right2.setPower(power);
-        }
-        else{ // -0.001 < robot.angle.firstAngle < 0.001
-            robot.left1.setPower(power);
-            robot.left2.setPower(power);
-            robot.right1.setPower(power);
-            robot.right2.setPower(power);
-        }
-    }
-
-    public void strafe(String direction, double power, int targetPosition){
-        robot.setRunMode("RUN_TO_POSITION");
-//        if(direction == "right") {
-//            robot.left1.setTargetPosition(-targetPosition);
-//            robot.left2.setTargetPosition(targetPosition);
-//            robot.right1.setTargetPosition(targetPosition);
-//            robot.right2.setTargetPosition(-targetPosition);
-//            robot.left1.setPower(-power);
-//            robot.left2.setPower(power);
-//            robot.right1.setPower(power);
-//            robot.right2.setPower(-power);
-//        }
-        if(direction == "left"){
-            robot.left1.setTargetPosition(-targetPosition);
-            robot.left2.setTargetPosition(targetPosition);
-            robot.right1.setTargetPosition(-targetPosition);
-            robot.right2.setTargetPosition(targetPosition);
+    public void strafe(String direction, double power) {
+        if (direction == "right") {
             robot.left1.setPower(-power);
             robot.left2.setPower(power);
+            robot.right1.setPower(power);
+            robot.right2.setPower(-power);
+        }
+        if (direction == "left") {
+            robot.left1.setPower(power);
+            robot.left2.setPower(-power);
             robot.right1.setPower(-power);
             robot.right2.setPower(power);
         }
-        robot.setRunMode("RUN_USING_ENCODER");
-    }
-
-    public void knockOffBall(int selection) {
-
-        if (selection == 0) {
-            robot.rotateArm.setPosition(robot.ROTATE_LEFT);
-        }
-        if (selection == 1) {
-            robot.rotateArm.setPosition(robot.ROTATE_RIGHT);
-        }
-        sleep(500);
-        robot.lowerArm.setPosition(robot.JEWEL_ARM_UP);
-        sleep(500);
-        robot.rotateArm.setPosition(robot.ROTATE_MID);
     }
 }

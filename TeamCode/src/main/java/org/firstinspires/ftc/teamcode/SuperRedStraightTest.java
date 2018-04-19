@@ -89,7 +89,8 @@ public class SuperRedStraightTest extends LinearOpMode {
 
         waitForStart();
         robot.initServoPositions();
-        robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
+        robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+        robot.glyphFlip.setPower(0.4);
         sleep(500);
         if (targetPosition == 4) {
             targetPosition = 3;
@@ -145,10 +146,10 @@ public class SuperRedStraightTest extends LinearOpMode {
 
 //        //1 - LEFT, 2 - RIGHT, 3 - CENTER, 0 - NOT VISIBLE, 4 - TIMEOUT
             if (targetPosition == 1) {
-                robot.left1.setTargetPosition(1250);
-                robot.left2.setTargetPosition(1250);
-                robot.right1.setTargetPosition(1250);
-                robot.right2.setTargetPosition(1250);
+                robot.left1.setTargetPosition(1100);
+                robot.left2.setTargetPosition(1100);
+                robot.right1.setTargetPosition(1100);
+                robot.right2.setTargetPosition(1100);
                 robot.left1.setPower(0.25);
                 robot.left2.setPower(0.25);
                 robot.right1.setPower(0.25);
@@ -179,6 +180,7 @@ public class SuperRedStraightTest extends LinearOpMode {
                         robot.right2.setPower(0.25);
                         telemetry.update();
                     }
+                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
                 }
                 robot.left1.setPower(0);
                 robot.left2.setPower(0);
@@ -210,6 +212,8 @@ public class SuperRedStraightTest extends LinearOpMode {
                 sleep(500);
                 robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
                 sleep(1000);
+                robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+                sleep(500);
 
                 robot.setRunMode("STOP_AND_RESET_ENCODER");
                 sleep(50);
@@ -274,6 +278,7 @@ public class SuperRedStraightTest extends LinearOpMode {
                         robot.right2.setPower(0.25);
                         telemetry.update();
                     }
+                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
                 }
                 robot.left1.setPower(0);
                 robot.left2.setPower(0);
@@ -305,6 +310,8 @@ public class SuperRedStraightTest extends LinearOpMode {
                 sleep(500);
                 robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
                 sleep(1000);
+                robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+                sleep(500);
 
                 robot.setRunMode("STOP_AND_RESET_ENCODER");
                 sleep(50);
@@ -368,6 +375,7 @@ public class SuperRedStraightTest extends LinearOpMode {
                         robot.right2.setPower(0.25);
                         telemetry.update();
                     }
+                    robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
                 }
                 robot.left1.setPower(0); //Stop motor movement
                 robot.left2.setPower(0);
@@ -398,6 +406,8 @@ public class SuperRedStraightTest extends LinearOpMode {
                 sleep(500);
                 robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
                 sleep(1000);
+                robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+                sleep(500);
 
                 robot.setRunMode("STOP_AND_RESET_ENCODER");
                 sleep(50);

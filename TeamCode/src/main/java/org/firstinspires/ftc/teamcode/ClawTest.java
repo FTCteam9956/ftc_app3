@@ -9,27 +9,28 @@ import com.qualcomm.robotcore.hardware.Servo;
 //@Disabled
 public class ClawTest extends LinearOpMode {
 
-    public Servo rotateBox;
+    public Servo discHold;
 
     public void runOpMode(){
 
-        rotateBox = hardwareMap.servo.get("rotateBox");
+        discHold = hardwareMap.servo.get("discHold");
 
         waitForStart();
 
         while(opModeIsActive()){
             if(gamepad1.a){
-                rotateBox.setPosition(0.1);
+                discHold.setPosition(0.3);
             }
             if(gamepad1.b){
-                rotateBox.setPosition(0.15);
+                discHold.setPosition(0.6);
             }
             if(gamepad1.x){
-                rotateBox.setPosition(0.18);
+                discHold.setPosition(0.0);
             }
             if(gamepad1.y){
-                rotateBox.setPosition(0.13);
+                discHold.setPosition(0.9);
             }
+            telemetry.addData("servo position", discHold.getPosition());
             idle();
         }
     }

@@ -88,7 +88,8 @@ public class SuperRedTurn extends LinearOpMode{
 
         waitForStart();
         robot.initServoPositions();
-        robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
+        robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
+        robot.glyphFlip.setPower(0.4);
         sleep(500);
         if (targetPosition == 0) {
             targetPosition = 3;
@@ -178,6 +179,7 @@ public class SuperRedTurn extends LinearOpMode{
                 telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
                 telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
                 telemetry.update();
+                robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
             }
             robot.left1.setPower(0);
             robot.left2.setPower(0);
@@ -225,7 +227,9 @@ public class SuperRedTurn extends LinearOpMode{
 
             sleep(500);
             robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
-            sleep(100);
+            sleep(1000);
+            robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+            sleep(500);
 
             robot.setRunMode("STOP_AND_RESET_ENCODER");
             sleep(50);
@@ -271,6 +275,7 @@ public class SuperRedTurn extends LinearOpMode{
                 telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
                 telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
                 telemetry.update();
+                robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
             }
             robot.left1.setPower(0);
             robot.left2.setPower(0);
@@ -318,7 +323,9 @@ public class SuperRedTurn extends LinearOpMode{
 
             sleep(500);
             robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
-            sleep(100);
+            sleep(1000);
+            robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+            sleep(500);
 
             robot.setRunMode("STOP_AND_RESET_ENCODER");
             sleep(50);
@@ -364,6 +371,7 @@ public class SuperRedTurn extends LinearOpMode{
                 telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
                 telemetry.addData("Right2 Encoder", robot.right2.getCurrentPosition());
                 telemetry.update();
+                robot.bucketFinger.setPosition(robot.FINGER_CLOSED);
             }
             robot.left1.setPower(0);
             robot.left2.setPower(0);
@@ -411,7 +419,9 @@ public class SuperRedTurn extends LinearOpMode{
 
             sleep(500);
             robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
-            sleep(100);
+            sleep(1000);
+            robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+            sleep(500);
 
             robot.setRunMode("STOP_AND_RESET_ENCODER");
             sleep(50);
