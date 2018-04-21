@@ -146,10 +146,10 @@ public class SuperRedStraightTest extends LinearOpMode {
 
 //        //1 - LEFT, 2 - RIGHT, 3 - CENTER, 0 - NOT VISIBLE, 4 - TIMEOUT
             if (targetPosition == 1) {
-                robot.left1.setTargetPosition(1100);
-                robot.left2.setTargetPosition(1100);
-                robot.right1.setTargetPosition(1100);
-                robot.right2.setTargetPosition(1100);
+                robot.left1.setTargetPosition(1050);
+                robot.left2.setTargetPosition(1050);
+                robot.right1.setTargetPosition(1050);
+                robot.right2.setTargetPosition(1050);
                 robot.left1.setPower(0.25);
                 robot.left2.setPower(0.25);
                 robot.right1.setPower(0.25);
@@ -222,7 +222,7 @@ public class SuperRedStraightTest extends LinearOpMode {
                 robot.left1.setTargetPosition(-200);
                 robot.left2.setTargetPosition(-200);
                 robot.right1.setTargetPosition(-200);
-                robot.right2.setTargetPosition(-200);
+                robot.right2.setTargetPosition(-200); //Drive forward
                 robot.left1.setPower(-0.25);
                 robot.left2.setPower(-0.25);
                 robot.right1.setPower(-0.25);
@@ -235,13 +235,12 @@ public class SuperRedStraightTest extends LinearOpMode {
                 sleep(50);
                 robot.left1.setTargetPosition(150);
                 robot.left2.setTargetPosition(150);
-                robot.right1.setTargetPosition(150);
+                robot.right1.setTargetPosition(150); //Drive Backwards
                 robot.right2.setTargetPosition(150);
                 robot.left1.setPower(0.1);
                 robot.left2.setPower(0.1);
                 robot.right1.setPower(0.1);
                 robot.right2.setPower(0.1);
-
             }
             if (targetPosition == 2) {
                 robot.left1.setTargetPosition(1125);
@@ -436,21 +435,49 @@ public class SuperRedStraightTest extends LinearOpMode {
                 robot.right1.setPower(0.1);
                 robot.right2.setPower(0.1);
             }
+            //Lower Glyph intake
         robot.glyphFlip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleep(50);
         robot.glyphFlip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         sleep(50);
-        robot.glyphFlip.setTargetPosition(-36);
+        robot.glyphFlip.setTargetPosition(-35);
         sleep(50);
-        robot.glyphFlip.setPower(1);
-        sleep(50);
-        while(robot.glyphFlip.getCurrentPosition() > -35){
-            robot.glyphFlip.setPower(1);
-            telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
-        }
+        robot.glyphFlip.setPower(-0.5);
+        sleep(1000);
+//        while(robot.glyphFlip.getCurrentPosition() > -15){
+//            robot.glyphFlip.setPower(-0.5);
+//            telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
+//        }
         robot.glyphFlip.setPower(0);
-        robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
-        sleep(500);
+        robot.rotateBox.setPosition(robot.ROTATEBOX_DOWN);
+        sleep(250);
+        robot.discHold.setPosition(0.17);//DISC IN
+
+        telemetry.update();
+//        while (robot.angles.firstAngle > 98 || robot.angles.firstAngle < 85) {
+//            telemetry.update();
+//            if (robot.angles.firstAngle > 98) {
+//                robot.left1.setPower(0.4);
+//                robot.left2.setPower(0.4);
+//                robot.right1.setPower(-0.4);
+//                robot.right2.setPower(-0.4);
+//            } else if (robot.angles.firstAngle < 85) {
+//                robot.left1.setPower(-0.4);
+//                robot.left2.setPower(-0.4);
+//                robot.right1.setPower(0.13);
+//                robot.right2.setPower(0.13);
+//            }
+//        }
+        robot.setRunMode("RUN_USING_ENCODER");
+        while (robot.angles.firstAngle > 92 || robot.angles.firstAngle < 89.5) {
+            //THIS IS A LEFT TURN TO 90 DEGREEs
+            robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.9);
+            robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.9);
+            robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.9);
+            robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.9);
+            telemetry.addData("Heading", robot.angles.firstAngle);
+            telemetry.update();
+        }
         }
 
     public int lookForVuMark(VuforiaTrackable rTemplate) {

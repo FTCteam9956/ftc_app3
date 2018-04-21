@@ -441,7 +441,18 @@ public class SuperBlueTurn extends LinearOpMode{
         }
         robot.glyphFlip.setPower(0);
         robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
-        sleep(500);
+        sleep(250);
+        robot.discHold.setPosition(0.22);//DISC IN
+
+        while (robot.angles.firstAngle > -92 || robot.angles.firstAngle < -89.5) {
+            //THIS IS A LEFT TURN TO 90 DEGREES
+            robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+            robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+            robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+            robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+            telemetry.addData("Heading", robot.angles.firstAngle);
+            telemetry.update();
+        }
     }
     void composeTelemetry() {
 

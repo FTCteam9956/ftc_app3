@@ -467,18 +467,8 @@ public class MultiBlockTest extends LinearOpMode {
             while(robot.left1.isBusy()){
                 telemetry.addData("Status: ", "Getting Extra Blocks");
             }
-            //Hunting for blocks
-            while(blockCount < 2 && System.nanoTime() < 25000000 && opModeIsActive()){
-                while (robot.angles.firstAngle > 100 || robot.angles.firstAngle < 98) {
-                    //THIS IS A LEFT TURN TO 90 DEGREES
-                    robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
-                    robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
-                    robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
-                    robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
-//                    if(robot.bucketFront.getDistance(DistanceUnit.CM))
-                }
-            }
         }
+        //Lower Intake
         robot.glyphFlip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleep(50);
         robot.glyphFlip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -494,6 +484,53 @@ public class MultiBlockTest extends LinearOpMode {
         robot.glyphFlip.setPower(0);
         robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
         sleep(500);
+
+        while (robot.angles.firstAngle > 92 || robot.angles.firstAngle < 89.5) {
+            //THIS IS A LEFT TURN TO 90 DEGREES
+            robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+            robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+            robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+            robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+            telemetry.addData("Heading", robot.angles.firstAngle);
+            telemetry.update();
+        }
+        sleep(10000);
+
+        robot.intake.setPower(0.95);
+        robot.left1.setTargetPosition(-1300); //Drive forward to put block in the stone
+        robot.left2.setTargetPosition(-1300);
+        robot.right1.setTargetPosition(-1300);
+        robot.right2.setTargetPosition(-1300);
+        robot.left1.setPower(-0.15);
+        robot.left2.setPower(-0.15);
+        robot.right1.setPower(-0.15);
+        robot.right2.setPower(-0.15);
+        while(robot.left1.isBusy()){
+            //Let motors spin
+        }
+        sleep(1000);
+        robot.left1.setTargetPosition(-150); //Drive forward to put block in the stone
+        robot.left2.setTargetPosition(-150);
+        robot.right1.setTargetPosition(-150);
+        robot.right2.setTargetPosition(-150);
+        robot.left1.setPower(-0.1);
+        robot.left2.setPower(-0.1);
+        robot.right1.setPower(-0.1);
+        robot.right2.setPower(-0.1);
+        sleep(100000);
+
+
+
+//        //Hunting for blocks
+//        while(blockCount < 2 && System.nanoTime() < 25000000 && opModeIsActive()){
+//            while (robot.angles.firstAngle > 100 || robot.angles.firstAngle < 98) {
+//                //THIS IS A LEFT TURN TO 90 DEGREES
+//                robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+//                robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
+//                robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+//                robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+//            }
+//        }
     }
 
     public int lookForVuMark(VuforiaTrackable rTemplate) {

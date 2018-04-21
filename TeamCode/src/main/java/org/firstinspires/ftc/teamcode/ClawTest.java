@@ -19,16 +19,16 @@ public class ClawTest extends LinearOpMode {
 
         while(opModeIsActive()){
             if(gamepad1.a){
-                discHold.setPosition(0.3);
+                discHold.setPosition(0.16);
             }
             if(gamepad1.b){
-                discHold.setPosition(0.6);
+                discHold.setPosition(0.2);
             }
             if(gamepad1.x){
-                discHold.setPosition(0.0);
+                discHold.setPosition(0.1);
             }
             if(gamepad1.y){
-                discHold.setPosition(0.9);
+                discHold.setPosition(0.18);
             }
             telemetry.addData("servo position", discHold.getPosition());
             idle();
