@@ -146,16 +146,16 @@ public class SuperRedStraightTest extends LinearOpMode {
 
 //        //1 - LEFT, 2 - RIGHT, 3 - CENTER, 0 - NOT VISIBLE, 4 - TIMEOUT
             if (targetPosition == 1) {
-                robot.left1.setTargetPosition(1050);
-                robot.left2.setTargetPosition(1050);
-                robot.right1.setTargetPosition(1050);
-                robot.right2.setTargetPosition(1050);
+                robot.left1.setTargetPosition(1150);
+                robot.left2.setTargetPosition(1150);
+                robot.right1.setTargetPosition(1150);
+                robot.right2.setTargetPosition(1150);
                 robot.left1.setPower(0.25);
                 robot.left2.setPower(0.25);
                 robot.right1.setPower(0.25);
                 robot.right2.setPower(0.25);
                 sleep(100);
-                while (robot.right1.isBusy()) {
+                while (robot.right1.isBusy() && opModeIsActive()) {
                     telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
                     telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
                     telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
@@ -190,20 +190,29 @@ public class SuperRedStraightTest extends LinearOpMode {
 
                 robot.setRunMode("RUN_USING_ENCODER");
                 sleep(50);
-                while (robot.angles.firstAngle > 120 || robot.angles.firstAngle < 107) {
+                while (robot.angles.firstAngle > 119 && opModeIsActive() || robot.angles.firstAngle < 115 && opModeIsActive()) {
+                    //THIS IS A LEFT TURN TO 90 DEGREEs
+                    robot.left1.setPower(((117 - robot.angles.firstAngle) / 117) * -0.35);
+                    robot.left2.setPower(((117 - robot.angles.firstAngle) / 117) * -0.35);
+                    robot.right1.setPower(((117 - robot.angles.firstAngle) / 117) * 0.35);
+                    robot.right2.setPower(((117 - robot.angles.firstAngle) / 117) * 0.35);
+                    telemetry.addData("Heading", robot.angles.firstAngle);
                     telemetry.update();
-                    if (robot.angles.firstAngle > 120) {
-                        robot.left1.setPower(0.13);
-                        robot.left2.setPower(0.13);
-                        robot.right1.setPower(-0.13);
-                        robot.right2.setPower(-0.13);
-                    } else if (robot.angles.firstAngle < 107) {
-                        robot.left1.setPower(-0.13);
-                        robot.left2.setPower(-0.13);
-                        robot.right1.setPower(0.13);
-                        robot.right2.setPower(0.13);
-                    }
                 }
+//                while (robot.angles.firstAngle > 120 || robot.angles.firstAngle < 107) {
+//                    telemetry.update();
+//                    if (robot.angles.firstAngle > 120) {
+//                        robot.left1.setPower(0.13);
+//                        robot.left2.setPower(0.13);
+//                        robot.right1.setPower(-0.13);
+//                        robot.right2.setPower(-0.13);
+//                    } else if (robot.angles.firstAngle < 107) {
+//                        robot.left1.setPower(-0.13);
+//                        robot.left2.setPower(-0.13);
+//                        robot.right1.setPower(0.13);
+//                        robot.right2.setPower(0.13);
+//                    }
+//                }
                 robot.left1.setPower(0);
                 robot.left2.setPower(0);
                 robot.right1.setPower(0);
@@ -252,7 +261,7 @@ public class SuperRedStraightTest extends LinearOpMode {
                 robot.right1.setPower(0.25);
                 robot.right2.setPower(0.25);
                 sleep(100);
-                while (robot.right1.isBusy()) {
+                while (robot.right1.isBusy() && opModeIsActive()) {
                     telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
                     telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
                     telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
@@ -287,20 +296,31 @@ public class SuperRedStraightTest extends LinearOpMode {
 
                 robot.setRunMode("RUN_USING_ENCODER");
                 sleep(50);
-                while (robot.angles.firstAngle > 68 || robot.angles.firstAngle < 55) {
+
+                while (robot.angles.firstAngle > 67 && opModeIsActive() || robot.angles.firstAngle < 63 && opModeIsActive()) {
+                    //THIS IS A LEFT TURN TO 90 DEGREEs
+                    robot.left1.setPower(((65 - robot.angles.firstAngle) / 65) * -0.35);
+                    robot.left2.setPower(((65 - robot.angles.firstAngle) / 65) * -0.35);
+                    robot.right1.setPower(((65 - robot.angles.firstAngle) / 65) * 0.35);
+                    robot.right2.setPower(((65 - robot.angles.firstAngle) / 65) * 0.35);
+                    telemetry.addData("Heading", robot.angles.firstAngle);
                     telemetry.update();
-                    if (robot.angles.firstAngle > 68) {
-                        robot.left1.setPower(0.13);
-                        robot.left2.setPower(0.13);
-                        robot.right1.setPower(-0.13);
-                        robot.right2.setPower(-0.13);
-                    } else if (robot.angles.firstAngle < 55) {
-                        robot.left1.setPower(-0.13);
-                        robot.left2.setPower(-0.13);
-                        robot.right1.setPower(0.13);
-                        robot.right2.setPower(0.13);
-                    }
                 }
+
+//                while (robot.angles.firstAngle > 68 || robot.angles.firstAngle < 55) {
+//                    telemetry.update();
+//                    if (robot.angles.firstAngle > 68) {
+//                        robot.left1.setPower(0.13);
+//                        robot.left2.setPower(0.13);
+//                        robot.right1.setPower(-0.13);
+//                        robot.right2.setPower(-0.13);
+//                    } else if (robot.angles.firstAngle < 55) {
+//                        robot.left1.setPower(-0.13);
+//                        robot.left2.setPower(-0.13);
+//                        robot.right1.setPower(0.13);
+//                        robot.right2.setPower(0.13);
+//                    }
+                //}
                 robot.left1.setPower(0);
                 robot.left2.setPower(0);
                 robot.right1.setPower(0);
@@ -340,16 +360,16 @@ public class SuperRedStraightTest extends LinearOpMode {
                 robot.right2.setPower(0.1);
 
             } else if (targetPosition == 3) {
-                robot.left1.setTargetPosition(980);
-                robot.left2.setTargetPosition(980);
-                robot.right1.setTargetPosition(980);
-                robot.right2.setTargetPosition(980);
+                robot.left1.setTargetPosition(970);
+                robot.left2.setTargetPosition(970);
+                robot.right1.setTargetPosition(970);
+                robot.right2.setTargetPosition(970);
                 robot.left1.setPower(0.25);
                 robot.left2.setPower(0.25);
                 robot.right1.setPower(0.25);
                 robot.right2.setPower(0.25);
                 sleep(100);
-                while (robot.right1.isBusy()) { //Telemetry of out positions
+                while (robot.right1.isBusy() && opModeIsActive()) { //Telemetry of out positions
                     telemetry.addData("Left1 Encoder", robot.left1.getCurrentPosition());
                     telemetry.addData("Left2 Encoder", robot.left2.getCurrentPosition());
                     telemetry.addData("Right1 Encoder", robot.right1.getCurrentPosition());
@@ -383,20 +403,31 @@ public class SuperRedStraightTest extends LinearOpMode {
 
                 robot.setRunMode("RUN_USING_ENCODER"); //Change the mode to run with encoders
                 sleep(50);
-                while (robot.angles.firstAngle > 115 || robot.angles.firstAngle < 102) { //Turning
+
+                while (robot.angles.firstAngle > 109 && opModeIsActive() || robot.angles.firstAngle < 107 && opModeIsActive()) {
+                    //THIS IS A LEFT TURN TO 90 DEGREEs
+                    robot.left1.setPower(((108 - robot.angles.firstAngle) / 108) * -0.35);
+                    robot.left2.setPower(((108 - robot.angles.firstAngle) / 108) * -0.35);
+                    robot.right1.setPower(((108 - robot.angles.firstAngle) / 108) * 0.35);
+                    robot.right2.setPower(((108 - robot.angles.firstAngle) / 108) * 0.35);
+                    telemetry.addData("Heading", robot.angles.firstAngle);
                     telemetry.update();
-                    if (robot.angles.firstAngle > 115) {
-                        robot.left1.setPower(0.13);
-                        robot.left2.setPower(0.13);
-                        robot.right1.setPower(-0.13);
-                        robot.right2.setPower(-0.13);
-                    } else if (robot.angles.firstAngle < 102) {
-                        robot.left1.setPower(-0.13);
-                        robot.left2.setPower(-0.13);
-                        robot.right1.setPower(0.13);
-                        robot.right2.setPower(0.13);
-                    }
                 }
+
+//                while (robot.angles.firstAngle > 114 || robot.angles.firstAngle < 101) { //Turning
+//                    telemetry.update();
+//                    if(robot.angles.firstAngle > 118){
+//                        robot.left1.setPower(0.13);
+//                        robot.left2.setPower(0.13);
+//                        robot.right1.setPower(-0.13);
+//                        robot.right2.setPower(-0.13);
+//                    }else if (robot.angles.firstAngle < 105){
+//                        robot.left1.setPower(-0.13);
+//                        robot.left2.setPower(-0.13);
+//                        robot.right1.setPower(0.13);
+//                        robot.right2.setPower(0.13);
+//                    }
+                //}
                 robot.left1.setPower(0); //Stop motors
                 robot.left2.setPower(0);
                 robot.right1.setPower(0);
@@ -451,7 +482,7 @@ public class SuperRedStraightTest extends LinearOpMode {
         robot.glyphFlip.setPower(0);
         robot.rotateBox.setPosition(robot.ROTATEBOX_DOWN);
         sleep(250);
-        robot.discHold.setPosition(0.17);//DISC IN
+        robot.discHold.setPosition(0.0);//DISC IN
 
         telemetry.update();
 //        while (robot.angles.firstAngle > 98 || robot.angles.firstAngle < 85) {
@@ -469,12 +500,12 @@ public class SuperRedStraightTest extends LinearOpMode {
 //            }
 //        }
         robot.setRunMode("RUN_USING_ENCODER");
-        while (robot.angles.firstAngle > 92 || robot.angles.firstAngle < 89.5) {
+        while (robot.angles.firstAngle > 91 && opModeIsActive() || robot.angles.firstAngle < 89 && opModeIsActive()) {
             //THIS IS A LEFT TURN TO 90 DEGREEs
-            robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.9);
-            robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.9);
-            robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.9);
-            robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.9);
+            robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.35);
+            robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.35);
+            robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.35);
+            robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.35);
             telemetry.addData("Heading", robot.angles.firstAngle);
             telemetry.update();
         }

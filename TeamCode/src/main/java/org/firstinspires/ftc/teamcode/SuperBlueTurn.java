@@ -100,13 +100,13 @@ public class SuperBlueTurn extends LinearOpMode{
         while (loopBreak == 0) {
             sleep(300);
             if (robot.jewelArm.red() > robot.jewelArm.blue()) {
-                knockOffBall(1); //go left
+                knockOffBall(1); //go right
                 telemetry.addData("Status", "Confirmed Red Ball!");
                 sleep(500);
                 loopBreak = 1;
             } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
                 if (robot.jewelArm.blue() > 27) {
-                    knockOffBall(0); //go right
+                    knockOffBall(0); //go left
                     telemetry.addData("Status", "Confirmed Blue Ball!");
                     sleep(500);
                     loopBreak = 1;
@@ -118,13 +118,13 @@ public class SuperBlueTurn extends LinearOpMode{
                     robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_DOWN, 200, 300);
                     sleep(300);
                     if (robot.jewelArm.red() > robot.jewelArm.blue()) {
-                        knockOffBall(1); //Go left
+                        knockOffBall(1); //Go right
                         telemetry.addData("Status", "Confirmed Red Ball!");
                         sleep(500);
                         loopBreak = 1;
                     } else if (robot.jewelArm.red() < robot.jewelArm.blue()) {
                         if (robot.jewelArm.blue() > 27) {
-                            knockOffBall(0); //go right
+                            knockOffBall(0); //go left
                             telemetry.addData("Status", "Confirmed Blue Ball!");
                             sleep(500);
                             loopBreak = 1;
@@ -141,10 +141,10 @@ public class SuperBlueTurn extends LinearOpMode{
         robot.moveServo(robot.lowerArm, robot.JEWEL_ARM_UP, 200, 300);
         sleep(500);
 
-        robot.left1.setTargetPosition(-850);
-        robot.left2.setTargetPosition(-850);
-        robot.right1.setTargetPosition(-850);
-        robot.right2.setTargetPosition(-850);
+        robot.left1.setTargetPosition(-800);
+        robot.left2.setTargetPosition(-800);
+        robot.right1.setTargetPosition(-800);
+        robot.right2.setTargetPosition(-800);
         robot.left1.setPower(-0.25);
         robot.left2.setPower(-0.25);
         robot.right1.setPower(-0.25);
@@ -187,30 +187,34 @@ public class SuperBlueTurn extends LinearOpMode{
 
             robot.setRunMode("RUN_USING_ENCODER");
             sleep(50);
-            while (robot.angles.firstAngle > 38 || robot.angles.firstAngle < 25) { //30-17
+            while (robot.angles.firstAngle > 20 && opModeIsActive() || robot.angles.firstAngle < 16 && opModeIsActive()) {
+                //THIS IS A LEFT TURN TO 90 DEGREEs
+                robot.left1.setPower(((18 - robot.angles.firstAngle) / 18) * -0.15);
+                robot.left2.setPower(((18 - robot.angles.firstAngle) / 18) * -0.15);
+                robot.right1.setPower(((18 - robot.angles.firstAngle) / 18) * 0.15);
+                robot.right2.setPower(((18 - robot.angles.firstAngle) / 18) * 0.15);
+                telemetry.addData("Heading", robot.angles.firstAngle);
                 telemetry.update();
-                if (robot.angles.firstAngle > 38) {
-                    robot.left1.setPower(0.13);
-                    robot.left2.setPower(0.13);
-                    robot.right1.setPower(-0.13);
-                    robot.right2.setPower(-0.13);
-                } else if (robot.angles.firstAngle < 25) {
-                    robot.left1.setPower(-0.13);
-                    robot.left2.setPower(-0.13);
-                    robot.right1.setPower(0.13);
-                    robot.right2.setPower(0.13);
-                }
             }
+//            while (robot.angles.firstAngle > 38 || robot.angles.firstAngle < 25) { //30-17
+//                telemetry.update();
+//                if (robot.angles.firstAngle > 38) {
+//                    robot.left1.setPower(0.13);
+//                    robot.left2.setPower(0.13);
+//                    robot.right1.setPower(-0.13);
+//                    robot.right2.setPower(-0.13);
+//                } else if (robot.angles.firstAngle < 25) {
+//                    robot.left1.setPower(-0.13);
+//                    robot.left2.setPower(-0.13);
+//                    robot.right1.setPower(0.13);
+//                    robot.right2.setPower(0.13);
+//                }
+//            }
             robot.left1.setPower(0);
             robot.left2.setPower(0);
             robot.right1.setPower(0);
             robot.right2.setPower(0);
             sleep(500);
-
-            robot.setRunMode("STOP_AND_RESET_ENCODER");
-            sleep(50);
-            robot.setRunMode("RUN_TO_POSITION");
-            sleep(50);
 
             sleep(500);
             robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
@@ -224,7 +228,7 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(50);
             robot.left1.setTargetPosition(-300);
             robot.left2.setTargetPosition(-300);
-            robot.right1.setTargetPosition(-300);
+            robot.right1.setTargetPosition(-300); //Drive Forward
             robot.right2.setTargetPosition(-300);
             robot.left1.setPower(-0.25);
             robot.left2.setPower(-0.25);
@@ -238,7 +242,7 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(50);
             robot.left1.setTargetPosition(150);
             robot.left2.setTargetPosition(150);
-            robot.right1.setTargetPosition(150);
+            robot.right1.setTargetPosition(150); //Backup
             robot.right2.setTargetPosition(150);
             robot.left1.setPower(0.2);
             robot.left2.setPower(0.2);
@@ -272,30 +276,34 @@ public class SuperBlueTurn extends LinearOpMode{
 
             robot.setRunMode("RUN_USING_ENCODER");
             sleep(50);
-            while (robot.angles.firstAngle > 30 || robot.angles.firstAngle < 17) {
+            while (robot.angles.firstAngle > 30 && opModeIsActive() || robot.angles.firstAngle < 26 && opModeIsActive()) {
+                //THIS IS A LEFT TURN TO 90 DEGREEs
+                robot.left1.setPower(((28 - robot.angles.firstAngle) / 28) * -0.3);
+                robot.left2.setPower(((28 - robot.angles.firstAngle) / 28) * -0.3);
+                robot.right1.setPower(((28 - robot.angles.firstAngle) / 28) * 0.3);
+                robot.right2.setPower(((28 - robot.angles.firstAngle) / 28) * 0.3);
+                telemetry.addData("Heading", robot.angles.firstAngle);
                 telemetry.update();
-                if (robot.angles.firstAngle > 30) {
-                    robot.left1.setPower(0.13);
-                    robot.left2.setPower(0.13);
-                    robot.right1.setPower(-0.13);
-                    robot.right2.setPower(-0.13);
-                } else if (robot.angles.firstAngle < 17) {
-                    robot.left1.setPower(-0.13);
-                    robot.left2.setPower(-0.13);
-                    robot.right1.setPower(0.13);
-                    robot.right2.setPower(0.13);
-                }
             }
+//            while (robot.angles.firstAngle > 30 || robot.angles.firstAngle < 17) {
+//                telemetry.update();
+//                if (robot.angles.firstAngle > 30) {
+//                    robot.left1.setPower(0.13);
+//                    robot.left2.setPower(0.13);
+//                    robot.right1.setPower(-0.13);
+//                    robot.right2.setPower(-0.13);
+//                } else if (robot.angles.firstAngle < 17) {
+//                    robot.left1.setPower(-0.13);
+//                    robot.left2.setPower(-0.13);
+//                    robot.right1.setPower(0.13);
+//                    robot.right2.setPower(0.13);
+//                }
+//            }
             robot.left1.setPower(0);
             robot.left2.setPower(0);
             robot.right1.setPower(0);
             robot.right2.setPower(0);
             sleep(500);
-
-            robot.setRunMode("STOP_AND_RESET_ENCODER");
-            sleep(50);
-            robot.setRunMode("RUN_TO_POSITION");
-            sleep(50);
 
 //            robot.left1.setTargetPosition(-150);
 //            robot.left2.setTargetPosition(-150);
@@ -308,7 +316,6 @@ public class SuperBlueTurn extends LinearOpMode{
 //            sleep(100);
 //            while(robot.left1.isBusy()){}
 
-            sleep(500);
             robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
             sleep(1000);
             robot.bucketFinger.setPosition(robot.FINGER_OPEN);
@@ -343,10 +350,10 @@ public class SuperBlueTurn extends LinearOpMode{
             sleep(1000);
 
         }if (targetPosition == 3) {
-            robot.left1.setTargetPosition(-1000);
-            robot.left2.setTargetPosition(1000);
-            robot.right1.setTargetPosition(-1000); //strafe left
-            robot.right2.setTargetPosition(1000);
+            robot.left1.setTargetPosition(-1050);
+            robot.left2.setTargetPosition(1050);
+            robot.right1.setTargetPosition(-1050); //strafe left
+            robot.right2.setTargetPosition(1050);
             robot.left1.setPower(-0.2);
             robot.left2.setPower(0.2);
             robot.right1.setPower(-0.2);
@@ -368,32 +375,35 @@ public class SuperBlueTurn extends LinearOpMode{
 
             robot.setRunMode("RUN_USING_ENCODER");
             sleep(50);
-            while (robot.angles.firstAngle > 30 || robot.angles.firstAngle < 17) {
+            while (robot.angles.firstAngle > 26 && opModeIsActive() || robot.angles.firstAngle < 22 && opModeIsActive()) {
+                //THIS IS A LEFT TURN TO 90 DEGREEs
+                robot.left1.setPower(((24 - robot.angles.firstAngle) / 24) * -0.25);
+                robot.left2.setPower(((24 - robot.angles.firstAngle) / 24) * -0.25);
+                robot.right1.setPower(((24 - robot.angles.firstAngle) / 24) * 0.25);
+                robot.right2.setPower(((24 - robot.angles.firstAngle) / 24) * 0.25);
+                telemetry.addData("Heading", robot.angles.firstAngle);
                 telemetry.update();
-                if (robot.angles.firstAngle > 30) {
-                    robot.left1.setPower(0.13);
-                    robot.left2.setPower(0.13);
-                    robot.right1.setPower(-0.13);
-                    robot.right2.setPower(-0.13);
-                } else if (robot.angles.firstAngle < 17) {
-                    robot.left1.setPower(-0.13);
-                    robot.left2.setPower(-0.13);
-                    robot.right1.setPower(0.13);
-                    robot.right2.setPower(0.13);
-                }
             }
+//            while (robot.angles.firstAngle > 30 || robot.angles.firstAngle < 17) {
+//                telemetry.update();
+//                if (robot.angles.firstAngle > 30) {
+//                    robot.left1.setPower(0.13);
+//                    robot.left2.setPower(0.13);
+//                    robot.right1.setPower(-0.13);
+//                    robot.right2.setPower(-0.13);
+//                } else if (robot.angles.firstAngle < 17) {
+//                    robot.left1.setPower(-0.13);
+//                    robot.left2.setPower(-0.13);
+//                    robot.right1.setPower(0.13);
+//                    robot.right2.setPower(0.13);
+//                }
+//            }
             robot.left1.setPower(0);
             robot.left2.setPower(0);
             robot.right1.setPower(0);
             robot.right2.setPower(0);
             sleep(500);
 
-            robot.setRunMode("STOP_AND_RESET_ENCODER");
-            sleep(50);
-            robot.setRunMode("RUN_TO_POSITION");
-            sleep(50);
-
-            sleep(500);
             robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
             sleep(1000);
             robot.bucketFinger.setPosition(robot.FINGER_OPEN);
@@ -431,25 +441,23 @@ public class SuperBlueTurn extends LinearOpMode{
         sleep(50);
         robot.glyphFlip.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         sleep(50);
-        robot.glyphFlip.setTargetPosition(-36);
+        robot.glyphFlip.setTargetPosition(-35);
         sleep(50);
-        robot.glyphFlip.setPower(1);
-        sleep(50);
-        while(robot.glyphFlip.getCurrentPosition() > -35){
-            robot.glyphFlip.setPower(1);
-            telemetry.addData("GlyphFlip", robot.glyphFlip.getCurrentPosition());
-        }
+        robot.glyphFlip.setPower(-0.5);
+        sleep(1000);
         robot.glyphFlip.setPower(0);
-        robot.rotateBox.setPosition(robot.ROTATEBOX_MIDDLE);
+        robot.rotateBox.setPosition(robot.ROTATEBOX_DOWN);
         sleep(250);
-        robot.discHold.setPosition(0.22);//DISC IN
 
-        while (robot.angles.firstAngle > -92 || robot.angles.firstAngle < -89.5) {
-            //THIS IS A LEFT TURN TO 90 DEGREES
-            robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
-            robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.25);
-            robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
-            robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.25);
+        robot.discHold.setPosition(0.0);//DISC IN
+
+        robot.setRunMode("RUN_USING_ENCODER");
+        while (robot.angles.firstAngle > 91 && opModeIsActive() || robot.angles.firstAngle < 89 && opModeIsActive()) {
+            //THIS IS A LEFT TURN TO 90 DEGREEs
+            robot.left1.setPower(((90 - robot.angles.firstAngle) / 90) * -0.3);
+            robot.left2.setPower(((90 - robot.angles.firstAngle) / 90) * -0.3);
+            robot.right1.setPower(((90 - robot.angles.firstAngle) / 90) * 0.3);
+            robot.right2.setPower(((90 - robot.angles.firstAngle) / 90) * 0.3);
             telemetry.addData("Heading", robot.angles.firstAngle);
             telemetry.update();
         }
@@ -610,7 +618,8 @@ public class SuperBlueTurn extends LinearOpMode{
             robot.rotateArm.setPosition(robot.ROTATE_LEFT);
         }
         if (selection == 1) {
-            robot.rotateArm.setPosition(robot.ROTATE_RIGHT);
+            robot.moveServo(robot.rotateArm, 0.7, 150, 300);
+//            robot.rotateArm.setPosition(robot.ROTATE_RIGHT);
         }
         sleep(500);
         robot.lowerArm.setPosition(robot.JEWEL_ARM_UP);

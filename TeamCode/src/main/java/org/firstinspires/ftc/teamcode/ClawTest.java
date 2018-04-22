@@ -19,13 +19,13 @@ public class ClawTest extends LinearOpMode {
 
         while(opModeIsActive()){
             if(gamepad1.a){
-                discHold.setPosition(0.16);
+                discHold.setPosition(0.0);
             }
             if(gamepad1.b){
                 discHold.setPosition(0.2);
             }
             if(gamepad1.x){
-                discHold.setPosition(0.1);
+                discHold.setPosition(0.15);
             }
             if(gamepad1.y){
                 discHold.setPosition(0.18);
