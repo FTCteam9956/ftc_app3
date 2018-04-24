@@ -50,7 +50,7 @@ public class RRHardwarePresets {
     //Sensors
     public ColorSensor jewelArm;
     public ColorSensor bottomColor;
-    public ColorSensor blockAlpha;
+//    public ColorSensor blockAlpha;
     public DistanceSensor bucketFront;
     public DistanceSensor bucketBack;
     public DistanceSensor wallSensor;
@@ -103,7 +103,7 @@ public class RRHardwarePresets {
 
         jewelArm = HwMap.colorSensor.get("jewelArm");
         bottomColor = HwMap.colorSensor.get("bottomColor");
-        blockAlpha = HwMap.colorSensor.get("blockAlpha");
+//        blockAlpha = HwMap.colorSensor.get("blockAlpha");
         bucketFront = HwMap.get(DistanceSensor.class, "bucketFront");
         bucketBack = HwMap.get(DistanceSensor.class,"bucketBack");
         imu = HwMap.get(BNO055IMU.class, "imu");
