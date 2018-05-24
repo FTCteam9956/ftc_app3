@@ -103,7 +103,6 @@ public class RRHardwarePresets {
 
         jewelArm = HwMap.colorSensor.get("jewelArm");
         bottomColor = HwMap.colorSensor.get("bottomColor");
-//        blockAlpha = HwMap.colorSensor.get("blockAlpha");
         bucketFront = HwMap.get(DistanceSensor.class, "bucketFront");
         bucketBack = HwMap.get(DistanceSensor.class,"bucketBack");
         imu = HwMap.get(BNO055IMU.class, "imu");
@@ -117,7 +116,6 @@ public class RRHardwarePresets {
         right2.setDirection(DcMotorSimple.Direction.REVERSE);
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         winch.setDirection(DcMotorSimple.Direction.FORWARD);
-//        relicArm.setDirection(DcMotorSimple.Direction.FORWARD);
         glyphFlip.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //DC Motor stop behavior.

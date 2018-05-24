@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "BAS Test", group = "Teleop")
-//@Disabled
+@Disabled
 public class ClawTest extends LinearOpMode {
 
     public Servo discHold;

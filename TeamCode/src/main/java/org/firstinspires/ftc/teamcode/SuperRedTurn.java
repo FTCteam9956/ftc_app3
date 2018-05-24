@@ -164,10 +164,10 @@ public class SuperRedTurn extends LinearOpMode{
         sleep(50);
 
         if(targetPosition == 1){
-            robot.left1.setTargetPosition(-1300);
-            robot.left2.setTargetPosition(1300);
-            robot.right1.setTargetPosition(-1300); //strafe left
-            robot.right2.setTargetPosition(1300);
+            robot.left1.setTargetPosition(-1500);
+            robot.left2.setTargetPosition(1500);
+            robot.right1.setTargetPosition(-1500); //strafe left
+            robot.right2.setTargetPosition(1500);
             robot.left1.setPower(-0.2);
             robot.left2.setPower(0.2);
             robot.right1.setPower(-0.2);
@@ -190,12 +190,12 @@ public class SuperRedTurn extends LinearOpMode{
             robot.setRunMode("RUN_USING_ENCODER");
             sleep(50);
 
-            while (robot.angles.firstAngle > 148 && opModeIsActive() || robot.angles.firstAngle < 144 && opModeIsActive()) {
+            while (robot.angles.firstAngle > 154 && opModeIsActive() || robot.angles.firstAngle < 150 && opModeIsActive()) {
                 //THIS IS A LEFT TURN TO 90 DEGREEs
-                robot.left1.setPower(((146 - robot.angles.firstAngle) / 146) * -0.35);
-                robot.left2.setPower(((146 - robot.angles.firstAngle) / 146) * -0.35);
-                robot.right1.setPower(((146 - robot.angles.firstAngle) / 146) * 0.35);
-                robot.right2.setPower(((146 - robot.angles.firstAngle) / 146) * 0.35);
+                robot.left1.setPower(((152 - robot.angles.firstAngle) / 152) * -0.35);
+                robot.left2.setPower(((152 - robot.angles.firstAngle) / 152) * -0.35);
+                robot.right1.setPower(((152 - robot.angles.firstAngle) / 152) * 0.35);
+                robot.right2.setPower(((152 - robot.angles.firstAngle) / 152) * 0.35);
                 telemetry.addData("Heading", robot.angles.firstAngle);
                 telemetry.update();
             }
@@ -231,10 +231,10 @@ public class SuperRedTurn extends LinearOpMode{
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
 
-            robot.left1.setTargetPosition(-200);
-            robot.left2.setTargetPosition(-200);
-            robot.right1.setTargetPosition(-200);
-            robot.right2.setTargetPosition(-200); //Drive Forward
+            robot.left1.setTargetPosition(-240);
+            robot.left2.setTargetPosition(-240);
+            robot.right1.setTargetPosition(-240);
+            robot.right2.setTargetPosition(-240); //Drive Forward
             robot.left1.setPower(-0.2);
             robot.left2.setPower(-0.2);
             robot.right1.setPower(-0.2);
@@ -301,7 +301,7 @@ public class SuperRedTurn extends LinearOpMode{
                 robot.left1.setPower(((139 - robot.angles.firstAngle) / 139) * -0.35);
                 robot.left2.setPower(((139 - robot.angles.firstAngle) / 139) * -0.35);
                 robot.right1.setPower(((139 - robot.angles.firstAngle) / 139) * 0.35);
-                robot.right2.setPower(((139 - robot.angles.firstAngle) / 139) * 0.35);
+                robot.right2.setPower(((139 - robot.angles.firstAngle) / 139) * 0.35);  //Turn
                 telemetry.addData("Heading", robot.angles.firstAngle);
                 telemetry.update();
             }
@@ -326,6 +326,12 @@ public class SuperRedTurn extends LinearOpMode{
             robot.right2.setPower(0);
             sleep(500);
 
+            sleep(500);
+            robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
+            sleep(1000);
+            robot.bucketFinger.setPosition(robot.FINGER_OPEN);
+            sleep(500);
+
             robot.setRunMode("STOP_AND_RESET_ENCODER");
             sleep(50);
             robot.setRunMode("RUN_TO_POSITION");
@@ -341,12 +347,6 @@ public class SuperRedTurn extends LinearOpMode{
             robot.right2.setPower(-0.2);
             sleep(100);
             while(robot.left1.isBusy() && opModeIsActive()){}
-
-            sleep(500);
-            robot.moveServo(robot.rotateBox, robot.ROTATEBOX_UP, 100,500);
-            sleep(1000);
-            robot.bucketFinger.setPosition(robot.FINGER_OPEN);
-            sleep(500);
 
             robot.setRunMode("STOP_AND_RESET_ENCODER");
             sleep(50);
@@ -403,12 +403,12 @@ public class SuperRedTurn extends LinearOpMode{
             robot.setRunMode("RUN_USING_ENCODER");
             sleep(50);
 
-            while (robot.angles.firstAngle > 142 && opModeIsActive() || robot.angles.firstAngle < 138 && opModeIsActive()) {
+            while (robot.angles.firstAngle > 148 && opModeIsActive() || robot.angles.firstAngle < 144 && opModeIsActive()) {
                 //THIS IS A LEFT TURN TO 90 DEGREEs
-                robot.left1.setPower(((140 - robot.angles.firstAngle) / 140) * -0.35);
-                robot.left2.setPower(((140 - robot.angles.firstAngle) / 140) * -0.35);
-                robot.right1.setPower(((140 - robot.angles.firstAngle) / 140) * 0.35);
-                robot.right2.setPower(((140 - robot.angles.firstAngle) / 140) * 0.35);
+                robot.left1.setPower(((146 - robot.angles.firstAngle) / 146) * -0.35);
+                robot.left2.setPower(((146 - robot.angles.firstAngle) / 146) * -0.35);
+                robot.right1.setPower(((146 - robot.angles.firstAngle) / 146) * 0.35);
+                robot.right2.setPower(((146 - robot.angles.firstAngle) / 146) * 0.35);
                 telemetry.addData("Heading", robot.angles.firstAngle);
                 telemetry.update();
             }
@@ -443,10 +443,10 @@ public class SuperRedTurn extends LinearOpMode{
             robot.setRunMode("RUN_TO_POSITION");
             sleep(50);
 
-            robot.left1.setTargetPosition(-250);
-            robot.left2.setTargetPosition(-250);
-            robot.right1.setTargetPosition(-250);
-            robot.right2.setTargetPosition(-250);
+            robot.left1.setTargetPosition(-220);
+            robot.left2.setTargetPosition(-220);
+            robot.right1.setTargetPosition(-220);
+            robot.right2.setTargetPosition(-220);
             robot.left1.setPower(-0.2);
             robot.left2.setPower(-0.2);
             robot.right1.setPower(-0.2);
